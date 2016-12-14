@@ -30,6 +30,7 @@
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile></SFDFile>
+          <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -44,7 +45,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\build\</OutputDirectory>
-          <OutputName>gzll_host_w_dyn_pair_nrf24lu1p</OutputName>
+          <OutputName>nrf24lu1p_gzp_host</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -61,6 +62,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopU1X>0</nStopU1X>
+            <nStopU2X>0</nStopU2X>
           </BeforeCompile>
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
@@ -69,6 +72,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopB1X>0</nStopB1X>
+            <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
@@ -77,6 +82,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopA1X>0</nStopA1X>
+            <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
@@ -95,6 +102,7 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument></CustomArgument>
           <IncludeLibraryModules></IncludeLibraryModules>
+          <ComprImg>1</ComprImg>
           <BankNo>65535</BankNo>
         </CommonProperty>
         <DllOption>
@@ -125,6 +133,7 @@
             <RestoreFunctions>1</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
+            <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
             <UseTarget>1</UseTarget>
@@ -135,6 +144,8 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
+            <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>-1</TargetSelection>
@@ -163,9 +174,14 @@
             <Capability>1</Capability>
             <DriverSelection>4101</DriverSelection>
           </Flash1>
+          <bUseTDR>0</bUseTDR>
           <Flash2>BIN\nrfkeil515.dll</Flash2>
           <Flash3>"nrfprog" (-2 %H -x $X)</Flash3>
           <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
+          <FcArmLst>0</FcArmLst>
         </Utilities>
         <Target51>
           <Target51Misc>
@@ -176,7 +192,7 @@
             <XDataHold>0</XDataHold>
             <UseOnchipRom>1</UseOnchipRom>
             <UseOnchipArithmetic>0</UseOnchipArithmetic>
-            <UseMultipleDPTR>1</UseMultipleDPTR>
+            <UseMultipleDPTR>0</UseMultipleDPTR>
             <UseOnchipXram>1</UseOnchipXram>
             <HadIRAM>1</HadIRAM>
             <HadXRAM>1</HadXRAM>
@@ -295,7 +311,7 @@
               <MiscControls></MiscControls>
               <Define>EX_PROJ_LU1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\..\..\hal;..\..\..\..\..\..\hal\nrf24l01p;..\..\..\..\..\..\gazell\common;..\..\..\..\..\..\gazell\nrf24lu1;..\..\..\params;..\..\..\..\..\..\lib\assertions;..\..\..\..\..\..\hal\nrf24lu1p;..\..\..\..\..\..\compiler\c51;..\..\..\..\..\..\compiler\common</IncludePath>
+              <IncludePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\compiler\common;..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common;..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1;..\..\..\nRFgo SDK 2.3.0.10040\source_code\params;..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal;..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24l01p;..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p;..\..\..\nRFgo SDK 2.3.0.10040\source_code\lib\assertions</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -357,7 +373,7 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\main.c</FilePath>
+              <FilePath>..\main.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -367,37 +383,37 @@
             <File>
               <FileName>gzll.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\common\gzll.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzll.c</FilePath>
             </File>
             <File>
               <FileName>gzll_timer_isr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzll_timer_isr.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_timer_isr.c</FilePath>
             </File>
             <File>
               <FileName>gzll_mcu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzll_mcu.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_mcu.c</FilePath>
             </File>
             <File>
               <FileName>gzll_radio_isr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzll_radio_isr.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_radio_isr.c</FilePath>
             </File>
             <File>
               <FileName>gzp_host.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\common\gzp_host.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzp_host.c</FilePath>
             </File>
             <File>
               <FileName>gzp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\common\gzp.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzp.c</FilePath>
             </File>
             <File>
               <FileName>gzp_host_lu1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzp_host_lu1.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzp_host_lu1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -407,27 +423,27 @@
             <File>
               <FileName>hal_nrf_hw.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24lu1p\hal_nrf_hw.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_nrf_hw.c</FilePath>
             </File>
             <File>
               <FileName>hal_nrf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24l01p\hal_nrf.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24l01p\hal_nrf.c</FilePath>
             </File>
             <File>
               <FileName>hal_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24lu1p\hal_flash.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_flash.c</FilePath>
             </File>
             <File>
               <FileName>hal_aes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24lu1p\hal_aes.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_aes.c</FilePath>
             </File>
             <File>
               <FileName>hal_delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\hal_delay.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\hal_delay.c</FilePath>
             </File>
           </Files>
         </Group>
