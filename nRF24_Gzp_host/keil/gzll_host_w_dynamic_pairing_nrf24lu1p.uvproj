@@ -206,7 +206,7 @@
             <useCB>0</useCB>
             <useXB>0</useXB>
             <useL251>1</useL251>
-            <useA251>1</useA251>
+            <useA251>0</useA251>
             <Mx51>0</Mx51>
             <ModC812>0</ModC812>
             <ModCont>0</ModCont>
@@ -311,7 +311,7 @@
               <MiscControls></MiscControls>
               <Define>EX_PROJ_LU1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\..\..\hal;..\..\..\..\..\..\hal\nrf24l01p;..\..\..\..\..\..\gazell\common;..\..\..\..\..\..\gazell\nrf24lu1;..\..\..\params;..\..\..\..\..\..\lib\assertions;..\..\..\..\..\..\hal\nrf24lu1p;..\..\..\..\..\..\compiler\c51;..\..\..\..\..\..\compiler\common</IncludePath>
+              <IncludePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal;..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24l01p;..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common;..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1;..\..\..\nRFgo SDK 2.3.0.10040\source_code\params;..\..\..\nRFgo SDK 2.3.0.10040\source_code\lib\assertions;..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p;..\..\..\nRFgo SDK 2.3.0.10040\source_code\compiler\c51;..\..\..\nRFgo SDK 2.3.0.10040\source_code\compiler\common;..\..\nRF24_Gzp_host</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -373,7 +373,12 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\main.c</FilePath>
+              <FilePath>..\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>STARTUP.A51</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\STARTUP.A51</FilePath>
             </File>
           </Files>
         </Group>
@@ -383,37 +388,37 @@
             <File>
               <FileName>gzll.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\common\gzll.c</FilePath>
-            </File>
-            <File>
-              <FileName>gzll_timer_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzll_timer_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>gzll_mcu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzll_mcu.c</FilePath>
-            </File>
-            <File>
-              <FileName>gzll_radio_isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzll_radio_isr.c</FilePath>
-            </File>
-            <File>
-              <FileName>gzp_host.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\common\gzp_host.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzll.c</FilePath>
             </File>
             <File>
               <FileName>gzp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\common\gzp.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzp.c</FilePath>
+            </File>
+            <File>
+              <FileName>gzll_timer_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_timer_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>gzll_mcu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_mcu.c</FilePath>
+            </File>
+            <File>
+              <FileName>gzll_radio_isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_radio_isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>gzp_host.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzp_host.c</FilePath>
             </File>
             <File>
               <FileName>gzp_host_lu1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\gazell\nrf24lu1\gzp_host_lu1.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzp_host_lu1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -423,27 +428,47 @@
             <File>
               <FileName>hal_nrf_hw.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24lu1p\hal_nrf_hw.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_nrf_hw.c</FilePath>
             </File>
             <File>
               <FileName>hal_nrf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24l01p\hal_nrf.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24l01p\hal_nrf.c</FilePath>
             </File>
             <File>
               <FileName>hal_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24lu1p\hal_flash.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_flash.c</FilePath>
             </File>
             <File>
               <FileName>hal_aes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\nrf24lu1p\hal_aes.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_aes.c</FilePath>
             </File>
             <File>
               <FileName>hal_delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\hal\hal_delay.c</FilePath>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\hal_delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_usb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_usb.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_usb_hid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_usb_hid.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>usb</GroupName>
+          <Files>
+            <File>
+              <FileName>usb_desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\usb_desc.c</FilePath>
             </File>
           </Files>
         </Group>

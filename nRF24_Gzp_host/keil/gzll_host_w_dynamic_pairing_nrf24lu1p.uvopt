@@ -180,8 +180,20 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\main.c</PathWithFileName>
+      <PathWithFileName>..\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>2</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\STARTUP.A51</PathWithFileName>
+      <FilenameWithoutPath>STARTUP.A51</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -195,25 +207,13 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>2</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\gazell\common\gzll.c</PathWithFileName>
-      <FilenameWithoutPath>gzll.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
       <FileNumber>3</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\gazell\nrf24lu1\gzll_timer_isr.c</PathWithFileName>
-      <FilenameWithoutPath>gzll_timer_isr.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzll.c</PathWithFileName>
+      <FilenameWithoutPath>gzll.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -224,8 +224,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\gazell\nrf24lu1\gzll_mcu.c</PathWithFileName>
-      <FilenameWithoutPath>gzll_mcu.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzp.c</PathWithFileName>
+      <FilenameWithoutPath>gzp.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -236,8 +236,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\gazell\nrf24lu1\gzll_radio_isr.c</PathWithFileName>
-      <FilenameWithoutPath>gzll_radio_isr.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_timer_isr.c</PathWithFileName>
+      <FilenameWithoutPath>gzll_timer_isr.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -248,8 +248,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\gazell\common\gzp_host.c</PathWithFileName>
-      <FilenameWithoutPath>gzp_host.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_mcu.c</PathWithFileName>
+      <FilenameWithoutPath>gzll_mcu.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -260,8 +260,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\gazell\common\gzp.c</PathWithFileName>
-      <FilenameWithoutPath>gzp.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzll_radio_isr.c</PathWithFileName>
+      <FilenameWithoutPath>gzll_radio_isr.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -272,7 +272,19 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\gazell\nrf24lu1\gzp_host_lu1.c</PathWithFileName>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\common\gzp_host.c</PathWithFileName>
+      <FilenameWithoutPath>gzp_host.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>9</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\gazell\nrf24lu1\gzp_host_lu1.c</PathWithFileName>
       <FilenameWithoutPath>gzp_host_lu1.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -287,25 +299,13 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>3</GroupNumber>
-      <FileNumber>9</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\hal\nrf24lu1p\hal_nrf_hw.c</PathWithFileName>
-      <FilenameWithoutPath>hal_nrf_hw.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
       <FileNumber>10</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\hal\nrf24l01p\hal_nrf.c</PathWithFileName>
-      <FilenameWithoutPath>hal_nrf.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_nrf_hw.c</PathWithFileName>
+      <FilenameWithoutPath>hal_nrf_hw.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -316,8 +316,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\hal\nrf24lu1p\hal_flash.c</PathWithFileName>
-      <FilenameWithoutPath>hal_flash.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24l01p\hal_nrf.c</PathWithFileName>
+      <FilenameWithoutPath>hal_nrf.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -328,8 +328,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\hal\nrf24lu1p\hal_aes.c</PathWithFileName>
-      <FilenameWithoutPath>hal_aes.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_flash.c</PathWithFileName>
+      <FilenameWithoutPath>hal_flash.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -340,8 +340,64 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\..\..\hal\hal_delay.c</PathWithFileName>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_aes.c</PathWithFileName>
+      <FilenameWithoutPath>hal_aes.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>14</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\hal_delay.c</PathWithFileName>
       <FilenameWithoutPath>hal_delay.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>15</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_usb.c</PathWithFileName>
+      <FilenameWithoutPath>hal_usb.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>16</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\nRFgo SDK 2.3.0.10040\source_code\hal\nrf24lu1p\hal_usb_hid.c</PathWithFileName>
+      <FilenameWithoutPath>hal_usb_hid.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+  </Group>
+
+  <Group>
+    <GroupName>usb</GroupName>
+    <tvExp>1</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>4</GroupNumber>
+      <FileNumber>17</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\usb_desc.c</PathWithFileName>
+      <FilenameWithoutPath>usb_desc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -31,7 +31,11 @@
 
 //lint -e534
 //lint -e830
-
+#include "nrf24lu1p.h"
+#include <string.h>
+#include "hal_usb.h"
+#include "hal_usb_hid.h"
+#include "usb_map.h"
 #include "gzll_mcu.h"
 #include "gzll.h"
 #include "gzp.h"
@@ -40,10 +44,29 @@
 #error This example project uses gzp_crypt, please remove the definition "GZP_CRYPT_DISABLE".
 #endif
 
+//USB
+static xdata uint8_t usb_in_buf[EP1_2_PACKET_SIZE];
+static xdata uint8_t usb_out_buf[EP1_2_PACKET_SIZE];
+static bool xdata app_usb_out_data_ready = false;
+extern code const usb_string_desc_templ_t g_usb_string_desc;
+static bool xdata app_pending_usb_write = false;
+
+static void app_send_usb_in_data(uint8_t * buf, uint8_t size);
+static void app_parse_usb_out_packet();
+static void app_wait_while_usb_pending();
+void gzp_usb_init();
+hal_usb_dev_req_resp_t device_req_cb(hal_usb_device_req* req, uint8_t** data_ptr, uint8_t* size) large reentrant;
+void suspend_cb(uint8_t allow_remote_wu) large reentrant;
+void resume_cb() large reentrant;
+void reset_cb() large reentrant;
+uint8_t ep_1_in_cb(uint8_t *adr_ptr, uint8_t* size) large reentrant;
+uint8_t ep_2_out_cb(uint8_t *adr_ptr, uint8_t* size) large reentrant;
+
 void main(void)
 {
   uint8_t payload[GZLL_MAX_PAYLOAD_LENGTH];
 
+  gzp_usb_init();
   mcu_init();
   gzll_init();
   gzp_init();
@@ -90,6 +113,84 @@ void main(void)
       }
     }   
   }          
+}
+
+void gzp_usb_init()
+{
+  // USB HAL initialization
+  hal_usb_init(true, device_req_cb, reset_cb, resume_cb, suspend_cb);   
+  hal_usb_endpoint_config(0x81, EP1_2_PACKET_SIZE, ep_1_in_cb);  // Configure 32 byte IN endpoint 1
+  hal_usb_endpoint_config(0x02, EP1_2_PACKET_SIZE, ep_2_out_cb); // Configure 32 byte OUT endpoint 2	
+}
+
+static void app_send_usb_in_data(uint8_t * buf, uint8_t size)
+{
+  app_wait_while_usb_pending();
+  app_pending_usb_write = true;  
+  memcpy(usb_in_buf, buf, size);
+  hal_usb_send_data(1, usb_in_buf, EP1_2_PACKET_SIZE);
+}
+
+
+static void app_wait_while_usb_pending()
+{    
+  uint16_t timeout = 50000;   // Will equal ~ 50-100 ms timeout 
+  while(timeout--)
+  {
+    if(!app_pending_usb_write)
+    {
+      break;
+    }
+  }    
+}
+
+hal_usb_dev_req_resp_t device_req_cb(hal_usb_device_req* req, uint8_t** data_ptr, uint8_t* size) large reentrant
+{
+  hal_usb_dev_req_resp_t retval;
+
+  if( hal_usb_hid_device_req_proc(req, data_ptr, size, &retval) == true ) 
+  {
+    // The request was processed with the result stored in the retval variable
+    return retval;
+  }
+  else
+  {
+    // The request was *not* processed by the HID subsystem
+    return STALL;   
+  }
+}
+
+void suspend_cb(uint8_t allow_remote_wu) large reentrant
+{
+  USBSLP = 1; // Disable USB clock (auto clear)
+  allow_remote_wu = 0;  
+}
+
+void resume_cb(void) large reentrant
+{
+}
+
+void reset_cb(void) large reentrant
+{
+}
+
+//-----------------------------------------------------------------------------
+// USB Endpoint Callbacks
+//-----------------------------------------------------------------------------  
+uint8_t ep_1_in_cb(uint8_t *adr_ptr, uint8_t* size) large reentrant
+{  
+  app_pending_usb_write = false;
+  return 0x60; // NAK
+  adr_ptr = adr_ptr;
+  size = size;
+}
+
+uint8_t ep_2_out_cb(uint8_t *adr_ptr, uint8_t* size) large reentrant
+{
+  memcpy(usb_out_buf, adr_ptr, *size);
+  app_usb_out_data_ready = true;
+  //P0 = *size;
+  return 0xff; // ACK
 }
 
 /** @} */
