@@ -65,6 +65,7 @@ static uint8_t spis_buffer[NORDIC_ESB_PACKET_LENGTH];
 static bool hid_esb_spis_need = false;
 static uint8_t spis_index = 0;
 static bool esbCRC(uint8_t * data, uint8_t size);
+static void copyESBToSpis();
 
 void init_spis_fifo()
 {
@@ -177,12 +178,12 @@ void nrf_esb_event_handler(nrf_esb_evt_t const * p_event)
                 if (rx_payload.length > 0)
                 {
 									  NRF_LOG_DEBUG("RX RECEIVED PAYLOAD\r\n");
-									  //if (esbCRC(rx_payload.data, rx_payload.data[0]) == true)
-									  if (hid_esb_spis_need == false)
+									  if (esbCRC(rx_payload.data, rx_payload.data[2]) == true)
+									  //if (hid_esb_spis_need == false)
 										{
 											  //memcpy(spis_tx_data, rx_payload.data, NORDIC_ESB_PACKET_LENGTH);
-									      memcpy(spis_buffer, rx_payload.data, NORDIC_ESB_PACKET_LENGTH);
-									      NRF_LOG_INFO("rx meng %d %d %d %d \r\n", rx_payload.data[0], rx_payload.data[1], rx_payload.data[2], rx_payload.data[3]);
+									      //memcpy(spis_buffer, rx_payload.data, NORDIC_ESB_PACKET_LENGTH);
+											  copyESBToSpis();
 									      hid_esb_spis_need = true;
 									      memset(rx_payload.data, 0, NORDIC_ESB_PACKET_LENGTH);
 										}
@@ -330,17 +331,33 @@ uint32_t esb_init( void )
 static bool esbCRC(uint8_t * data, uint8_t size)
 {
 	  uint8_t value = data[size+1];
-	  uint8_t result = data[1];
+	  uint8_t result = 0;
 	  uint8_t i;
-	  for(i = 2; i <= size; i++)
+	
+	  if (value == 0)
+		    return false;
+		
+	  for(i = 0; i <= size; i++)
 	  {
 			  result = result ^ data[i];
 		}
+		
+		NRF_LOG_INFO("CRC value is %d, now value is %d\r\n", value, result);
 		
 		if (result == value)
 			  return true;
 		else
 			  return false;
+}
+
+static void copyESBToSpis()
+{
+	  uint8_t len = rx_payload.data[2];
+	  uint8_t i = 0;
+	  for (i = 0; i < 2; i++)
+	      spis_buffer[i] = rx_payload.data[i];
+	  for (i = 2; i < len; i++)
+	      spis_buffer[i] = rx_payload.data[i+1];
 }
 
 int main(void)
