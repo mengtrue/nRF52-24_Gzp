@@ -65,7 +65,7 @@ static uint8_t spis_buffer[NORDIC_ESB_PACKET_LENGTH];
 static bool hid_esb_spis_need = false;
 static uint8_t spis_index = 0;
 static bool esbCRC(uint8_t * data, uint8_t size);
-static void copyESBToSpis();
+static void copyESBToSpis(void);
 
 void init_spis_fifo()
 {
