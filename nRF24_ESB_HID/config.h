@@ -31,8 +31,8 @@
 #include "usb_desc.h"
 
 
-#define  RF_CHANNEL        4    // 信道
-#define  RX_PAYLOAD_LEN    8    // 接收数据长度
+#define  RF_CHANNEL        2    // 信道
+#define  RX_PAYLOAD_LEN    32    // 接收数据长度
 
 
 /*-------------------管脚定义--------------------------------------------------*/
@@ -55,7 +55,7 @@ P05：输入，按键检测
 /*-------------------SUB命令--------------------------------------------------*/
 #define  CMD_IDLE             0 
 #define  CMD_CONFIG_RF        1    // 配置无线参数,信道和数据长度
-#define  CMD_SENDTODEV        2    // 将接收到的数据发送给设备
+#define  CMD_SENDTODEV        18    // 将接收到的数据发送给设备
 
 
 

@@ -95,7 +95,7 @@ uint8_t ep_2_out_cb(uint8_t *adr_ptr, uint8_t* size) large reentrant;
 //≈‰∂‘
 #define ESB_FLASH_LENGTH 2
 #define ESB_PAIR_CMD     5
-static bool pairing_mode = true;
+static bool pairing_mode = false;
 static bool flash_done   = false;
 static bool pair_finish  = false;
 static uint8_t esb_pair_length;
@@ -193,7 +193,10 @@ void main()
 				LED = ~LED;
 			}
 			    
-		}
+		} else if (hal_usb_get_state() == SUSPENDED)
+    {
+			hal_usb_wakeup();
+    }
 		
 		if(cmd == CMD_CONFIG_RF)
 		{
@@ -203,6 +206,12 @@ void main()
 		  CE_HIGH(); // Enable receiver 
 			cmd = CMD_IDLE;			
 		}
+    else if (cmd == CMD_SENDTODEV)
+    {
+      hal_nrf_write_ack_payload(HAL_NRF_PIPE0, usb_out_buf, EP1_2_PACKET_SIZE);
+      cmd = CMD_IDLE;
+    }
+		
   }
 }
 
