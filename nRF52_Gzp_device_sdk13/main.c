@@ -44,6 +44,7 @@
 #include "bsp.h"
 #include "app_error.h"
 #include "nrf_gzll_error.h"
+#include "nrf_delay.h"
 
 #define NRF_LOG_MODULE_NAME "APP"
 #include "nrf_log.h"
@@ -53,11 +54,30 @@
 /** @name Configuration */
 /*****************************************************************************/
 #define UNENCRYPTED_DATA_PIPE     2   ///< Pipes 0 and 1 are reserved for GZP pairing and data. See nrf_gzp.h.
-#define NRF_GZLLDE_RXPERIOD_DIV_2 504 ///< RXPERIOD/2 on LU1 = timeslot period on nRF5x.
+#define NRF_GZLLDE_RXPERIOD_DIV_2 600//504 ///< RXPERIOD/2 on LU1 = timeslot period on nRF5x.
 
 // Ensure that we try all channels before giving up
 #define MAX_TX_ATTEMPTS (NRF_GZLL_DEFAULT_TIMESLOTS_PER_CHANNEL_WHEN_DEVICE_OUT_OF_SYNC * \
                          NRF_GZLL_DEFAULT_CHANNEL_TABLE_SIZE)
+
+//GZP
+static gzp_id_req_res_t id_req_status   = GZP_ID_RESP_NO_REQUEST;
+static uint8_t          data_pipe;
+static bool             tx_success      = false;
+static bool             send_crypt_data = false;     
+static uint8_t          payload[NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH]; ///< Payload to send to Host. Data and acknowledgement payloads
+static uint8_t          ack[NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH];
+static uint32_t         ack_length      = NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH;
+
+//test
+static int8_t paired = -2;
+static void nRF52_device_wait_host(void);
+static void nRF52_device_send_pair_request(void);
+static bool nRF52_device_send_crypt_data(void);
+static bool nRF52_device_send_data(void);
+static void nRF52_device_set_payload(void);
+static void nRF52_device_set_pipe(uint8_t pipe);
+static void nRF52_device_ack_receive();
 
 /**
  * @brief Function to read the button states.
@@ -97,6 +117,92 @@ static void ui_init(void)
     NRF_LOG_FLUSH();
 }
 
+static void nRF52_device_wait_host()
+{
+    // If waiting for the host to grant or reject an ID request.
+    if (id_req_status == GZP_ID_RESP_PENDING)
+    {
+        // Send a new ID request for fetching response.
+        id_req_status = gzp_id_req_send();
+    }
+}
+
+static void nRF52_device_send_pair_request()
+{
+    // Send "system address request". Needed for sending any user data to the host.
+    if (gzp_address_req_send())
+    {
+        // Send "Host ID request". Needed for sending encrypted user data to the host.
+        id_req_status = gzp_id_req_send();
+    }
+    else
+    {
+        // System address request failed.
+        NRF_LOG_ERROR("address req send fail\r\n");
+        NRF_LOG_FLUSH();
+    }
+}
+
+static bool nRF52_device_send_crypt_data()
+{
+	  return gzp_crypt_data_send(payload, GZP_ENCRYPTED_USER_DATA_MAX_LENGTH);
+}
+
+static bool nRF52_device_send_data()
+{
+    bool result = true;
+    
+    nrf_gzp_reset_tx_complete();
+    nrf_gzp_reset_tx_success();
+
+    // Send packet as plain text.
+    //if (nrf_gzll_add_packet_to_tx_fifo(UNENCRYPTED_DATA_PIPE, payload, GZP_MAX_FW_PAYLOAD_LENGTH))
+    if (nrf_gzll_add_packet_to_tx_fifo(data_pipe, payload, NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH))
+    {
+        while (!nrf_gzp_tx_complete())
+        {
+            __WFI();
+        }
+        result = nrf_gzp_tx_success();
+        NRF_LOG_INFO("tx success : %d\r\n", tx_success);
+        NRF_LOG_FLUSH();
+    }
+    else
+    {
+        NRF_LOG_ERROR("TX fifo error \r\n");
+        NRF_LOG_FLUSH();
+    }
+    return result;
+}
+
+static void nRF52_device_set_payload()
+{
+    uint8_t i = 0;
+    for (i = 0; i < NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH; i++)
+        payload[i] = i;
+    payload[0] = data_pipe;
+}
+
+static void nRF52_device_set_pipe(uint8_t pipe)
+{
+    data_pipe = pipe;	
+}
+
+static void nRF52_device_ack_receive()
+{
+    uint8_t error;
+    if (nrf_gzll_fetch_packet_from_rx_fifo(data_pipe, ack, &ack_length))
+    {
+			  NRF_LOG_INFO("ACK received : %d\r\n", ack[ack_length - 1]);
+        NRF_LOG_FLUSH();
+    }
+    else
+    {
+        error = nrf_gzll_get_error_code();
+        NRF_LOG_INFO("ACK received error is %d\r\n", error);
+        NRF_LOG_FLUSH();
+    }
+}
 
 /*****************************************************************************/
 /**
@@ -107,13 +213,6 @@ static void ui_init(void)
 /*****************************************************************************/
 int main(void)
 {
-    bool             tx_success      = false;
-    bool             send_crypt_data = false;
-    gzp_id_req_res_t id_req_status   = GZP_ID_RESP_NO_REQUEST;
-
-    // Data and acknowledgement payloads
-    uint8_t payload[NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH]; ///< Payload to send to Host.
-
     // Set up the user interface (buttons and LEDs)
     ui_init();
 
@@ -138,39 +237,32 @@ int main(void)
     result_value = nrf_gzll_enable();
     GAZELLE_ERROR_CODE_CHECK(result_value);
 
-    for (;;)
+    nRF52_device_set_pipe(2);
+
+    nRF52_device_set_payload();
+
+		for (;;)
     {
-        payload[0] = input_get();
+        //payload[0] = input_get();
+        NRF_LOG_INFO("paired is %d\r\n", paired);
+        tx_success = false;
 
         // Send every other packet as encrypted data.
         if (send_crypt_data)
         {
-            // Send encrypted packet using the Gazell pairing library.
-            tx_success = gzp_crypt_data_send(payload, GZP_ENCRYPTED_USER_DATA_MAX_LENGTH);
+            if (paired < 0)
+                tx_success = false;
+						else if (nrf_gzll_get_tx_fifo_packet_count(data_pipe) < 3)
+                // Send encrypted packet using the Gazell pairing library.
+                tx_success = nRF52_device_send_crypt_data();
         }
         else
         {
-            nrf_gzp_reset_tx_complete();
-            nrf_gzp_reset_tx_success();
-
-            // Send packet as plain text.
-            if (nrf_gzll_add_packet_to_tx_fifo(UNENCRYPTED_DATA_PIPE,
-                                               payload,
-                                               GZP_MAX_FW_PAYLOAD_LENGTH))
-            {
-                while (!nrf_gzp_tx_complete())
-                {
-                    __WFI();
-                }
-                tx_success = nrf_gzp_tx_success();
-            }
-            else
-            {
-                NRF_LOG_ERROR("TX fifo error \r\n");
-                NRF_LOG_FLUSH();
-            }
+            if (paired < 0)
+                tx_success = false;
+            else if (nrf_gzll_get_tx_fifo_packet_count(data_pipe) < 3)
+                tx_success = nRF52_device_send_data();
         }
-        send_crypt_data = !send_crypt_data;
 
         // Check if data transfer failed.
         if (!tx_success)
@@ -178,25 +270,17 @@ int main(void)
             NRF_LOG_ERROR("Gazelle: transmission failed\r\n");
             NRF_LOG_FLUSH();
 
-            // Send "system address request". Needed for sending any user data to the host.
-            if (gzp_address_req_send())
-            {
-                // Send "Host ID request". Needed for sending encrypted user data to the host.
-                id_req_status = gzp_id_req_send();
-            }
-            else
-            {
-                // System address request failed.
-            }
+            paired = gzp_get_pairing_status();
+            if (paired < 0)
+                nRF52_device_send_pair_request();
+        }
+				else if (nrf_gzll_get_rx_fifo_packet_count(data_pipe) > 0)
+        {
+            nRF52_device_ack_receive();
         }
 
-        // If waiting for the host to grant or reject an ID request.
-        if (id_req_status == GZP_ID_RESP_PENDING)
-        {
-            // Send a new ID request for fetching response.
-            id_req_status = gzp_id_req_send();
-        }
+        nRF52_device_wait_host();
+
+        nrf_delay_ms(1);
     }
 }
-
-
