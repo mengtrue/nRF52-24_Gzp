@@ -237,7 +237,7 @@ static void nRF52_host_set_right_ack()
     right_ack_enable = true;
 }
 
-static void nRF52_host_process_left_ack()
+static void nRF52_host_process_left_ack()                                        //we can while(nrf_gzll_ok_to_add_packet_to_tx_fifo) to send
 {
     bool ack_result;
     uint8_t error;
