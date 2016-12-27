@@ -61,12 +61,12 @@ static volatile bool esb_continue;                                    //esb is r
 
 static uint8_t hand;
 
-#define TEST_SPIS_RX_DATA_LENGTH      54
+#define TEST_SPIS_RX_DATA_LENGTH      56
 static uint8_t test_spis_rx_data[TEST_SPIS_RX_DATA_LENGTH];
 
 #define ESB_STRING_LENGTH            5
 #define ESB_FLASH_LENGTH             2
-static volatile bool esb_pairing_mode = true;
+static volatile bool esb_pairing_mode = false;
 static volatile bool esb_paired       = false;
 static volatile bool esb_finish       = false;
 static uint32_t * addr;
@@ -86,6 +86,12 @@ static uint32_t esb_init( void );
 static uint8_t  ready[] = "READY";
 static uint8_t  apply[] = "APPLY";
 static uint8_t  ok[]    = "OK";
+
+static void test_init();
+static void test_spis_esb_fun();
+static volatile bool disable_pipe = true;
+static uint8_t  spis_pipe = 0;
+static volatile bool esb_enabled = false;
 
 void init_spis_fifo()
 {
@@ -111,10 +117,23 @@ void spis_put_esb_tx()
 	  uint8_t data[NORDIC_ESB_PACKET_LENGTH] = {SENSOR_PACKET_LENGTH, ESB_PACKET_NUMBER, hand};
 		uint8_t start = (ESB_PACKET_NUMBER == 1) ? 0 : (ESB_PACKET_NUMBER - 1) * NORDIC_ESB_PAYLOAD_LENGTH - 1;
 		uint8_t i;
-		
-		for(i = 0; i < NORDIC_ESB_PAYLOAD_LENGTH - 1 && (i < SENSOR_PACKET_LENGTH - start); i++)
-		{
-			  data[i+3] = spis_fifo[start+i];
+
+    if (disable_pipe)
+    {
+        memset(data, 0, NORDIC_ESB_PACKET_LENGTH);
+        data[0] = SENSOR_PACKET_LENGTH;
+        data[1] = ESB_PACKET_NUMBER;
+        start = (ESB_PACKET_NUMBER - 1) * NORDIC_ESB_PAYLOAD_LENGTH;
+
+        for (i = 0; i < NORDIC_ESB_PAYLOAD_LENGTH && (i < SENSOR_PACKET_LENGTH - start); i++)
+            data[i+2] = spis_fifo[start+i];
+		}
+    else
+    {
+        for(i = 0; i < NORDIC_ESB_PAYLOAD_LENGTH - 1 && (i < SENSOR_PACKET_LENGTH - start); i++)
+		    {
+            data[i+3] = spis_fifo[start+i];
+		    }
 		}
 		
 		if (ESB_PACKET_NUMBER == ESB_PACKET_SUM_NUMBER)
@@ -177,7 +196,7 @@ void nrf_esb_event_handler(nrf_esb_evt_t const * p_event)
     switch (p_event->evt_id)
     {
         case NRF_ESB_EVENT_TX_SUCCESS:
-					  NRF_LOG_DEBUG("ESB TX SUCCESS EVENT\r\n");
+					  //NRF_LOG_DEBUG("ESB TX SUCCESS EVENT\r\n");
 				    if (esb_paired == true && esb_finish == false)
 						{
 							  if (tx_payload.data[0] == flash_channel && tx_payload.data[1] == flash_pipe)
@@ -200,7 +219,7 @@ void nrf_esb_event_handler(nrf_esb_evt_t const * p_event)
 						}
 				    if (esb_continue)
 						{
-							  nrf_delay_ms(1);
+							  //nrf_delay_ms(1);
 							  spis_fifo_send_esb();
 						}
             break;
@@ -210,7 +229,7 @@ void nrf_esb_event_handler(nrf_esb_evt_t const * p_event)
             (void) nrf_esb_start_tx();
 				    if (esb_continue)
 						{
-							  nrf_delay_ms(1);
+							  //nrf_delay_ms(1);
 							  spis_fifo_send_esb();
 						}
             break;
@@ -424,7 +443,12 @@ uint32_t esb_init( void )
 					  tx_payload.pipe    = paired_pipe;
 		}
 		else
-		    tx_payload.pipe    = 0;
+    {
+        if (disable_pipe)
+            tx_payload.pipe = spis_pipe;
+        else
+		        tx_payload.pipe    = 0;
+		}
 		tx_payload.length  = NRF_ESB_MAX_PAYLOAD_LENGTH;
 
     nrf_esb_config_t nrf_esb_config         = NRF_ESB_DEFAULT_CONFIG;
@@ -462,26 +486,41 @@ uint32_t esb_init( void )
 		}
 		else
 		{
-		    err_code = nrf_esb_set_rf_channel(4);
+		    err_code = nrf_esb_set_rf_channel(99);
 		    VERIFY_SUCCESS(err_code);
 		}
-		
-		hand = 2;
-		test_spis_rx_data[0] = hand;
-		for(int i = 1; i < TEST_SPIS_RX_DATA_LENGTH; i++)
-		    test_spis_rx_data[i] = 0x09;
-
-    ESB_PACKET_NUMBER = 1;
-    ESB_PACKET_SUM_NUMBER = 2;
-    SENSOR_PACKET_LENGTH = TEST_SPIS_RX_DATA_LENGTH;
-		
     return err_code;
 }
 
-void test_spis_esb_fun()
+static void test_init()
 {
-	  //for(int i = 1; i < TEST_SPIS_RX_DATA_LENGTH; i++)
-	      //test_spis_rx_data[i]++;
+    hand = 3;
+		test_spis_rx_data[0] = hand;
+		for(int i = 1; i < TEST_SPIS_RX_DATA_LENGTH - 1; i++)
+		    test_spis_rx_data[i] = 1;
+
+    ESB_PACKET_NUMBER = 1;
+    ESB_PACKET_SUM_NUMBER = 2;
+    SENSOR_PACKET_LENGTH = TEST_SPIS_RX_DATA_LENGTH;	
+}
+
+static void test_spis_esb_fun()
+{
+    uint8_t i = 0;
+	  test_spis_rx_data[TEST_SPIS_RX_DATA_LENGTH - 1] = 0;
+    test_spis_rx_data[TEST_SPIS_RX_DATA_LENGTH - 1] ^= test_spis_rx_data[0];
+	  for(i = 1; i < TEST_SPIS_RX_DATA_LENGTH - 1; i++)
+    {
+	      test_spis_rx_data[i]++;
+        test_spis_rx_data[TEST_SPIS_RX_DATA_LENGTH - 1] ^= test_spis_rx_data[i];
+    }
+
+    if (disable_pipe == true && esb_enabled == false)
+    {
+        spis_pipe = hand;
+        if (esb_init() == NRF_SUCCESS)
+            esb_enabled = true;
+    }
 	  
 	  fifo_write     = true;
 		spis_to_fifo();
@@ -599,8 +638,13 @@ int main(void)
 	      esb_paired = isESBPaired();
 		}
 
-    err_code = esb_init();
-    ESB_ERROR_CHECK(err_code);
+    if (disable_pipe == false)
+    {
+        err_code = esb_init();
+        ESB_ERROR_CHECK(err_code);
+    }
+
+    test_init();
 
     //spis_init();
 
@@ -634,13 +678,13 @@ int main(void)
         }
 
         nrf_delay_us(50000);*/
-				while (nrf_esb_is_idle() == false)
+				/*while (nrf_esb_is_idle() == false)
 				{
 					  nrf_delay_ms(500);
 				}
 				uint32_t channel[1];
 				nrf_esb_rf_channel_get(channel);
-				NRF_LOG_INFO("channel is %d\r\n", channel[0]);
+				NRF_LOG_INFO("channel is %d\r\n", channel[0]);*/
 				if (esb_pairing_mode == true)
 				{
 					  NRF_LOG_INFO("pair mode is %d\r\n", esb_pairing_mode);
@@ -660,10 +704,10 @@ int main(void)
 				else
 				{
 					  test_spis_esb_fun();
-				    nrf_delay_ms(20);
+				    nrf_delay_ms(5);
 				}
 				
-				nrf_delay_ms(1000);
+				//nrf_delay_ms(1000);
         NRF_LOG_FLUSH();
     }
 }

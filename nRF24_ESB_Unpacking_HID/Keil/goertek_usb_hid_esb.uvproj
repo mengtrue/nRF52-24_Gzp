@@ -12,13 +12,13 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>nRFLU1P-F16</Device>
+          <Device>nRFLU1P-F32</Device>
           <Vendor>Nordic Semiconductor</Vendor>
-          <Cpu>IRAM(0-0xFF) IROM(0-0x3FFF) XRAM (0x8000-0x87FF) CLOCK(16000000) MODC2</Cpu>
+          <Cpu>IRAM(0-0xFF) IROM(0-0x7FFF) XRAM (0x8000-0x87FF) CLOCK(16000000) MODC2</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>4945</DeviceId>
+          <DeviceId>4946</DeviceId>
           <RegisterFile>reg24lu1.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
@@ -176,7 +176,7 @@
           </Flash1>
           <bUseTDR>0</bUseTDR>
           <Flash2>BIN\nrfkeil515.dll</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -270,7 +270,7 @@
               <IRO>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x4000</Size>
+                <Size>0x8000</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>

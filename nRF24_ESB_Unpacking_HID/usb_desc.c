@@ -48,7 +48,7 @@ code uint8_t g_usb_hid_report_data[] =
   0x15, 0x00,                   //   LOGICAL_MINIMUM (0)
   0x25, 0xff,                   //   LOGICAL_MAXIMUM (255)
   0x75, 0x08,                   //   REPORT_SIZE (8 bit)
-  0x95, USB_IN_PACKET_SIZE,      //   REPORT_COUNT (MAX_PACKET_SIZE_USB)
+  0x95, EP1_2_PACKET_SIZE,      //   REPORT_COUNT (EP1_2_PACKET_SIZE)        //USB point in/out every packet size
   0x09, 0x00,                   //   USAGE (Vendor Usage 1)
   0x81, 0x02,                   //   INPUT (Data,Var,Abs)
   0x09, 0x00,                   //   USAGE (Vendor Usage 1)
@@ -115,7 +115,7 @@ code const usb_conf_desc_templ_t g_usb_conf_desc =
     USB_DESC_ENDPOINT,                    // bDescriptorType
     0x81,                                 // bEndpointAddress
     USB_ENDPOINT_TYPE_INTERRUPT,          // bmAttributes
-    SWAP(USB_IN_PACKET_SIZE),              // wMaxPacketSize
+    SWAP(USB_IN_PACKET_SIZE),             // wMaxPacketSize       //actually usb in max size
     EP1_POLLING_INTERVAL                  // bInterval
   },
   // Endpoint Descriptor EP2OUT 
@@ -124,7 +124,7 @@ code const usb_conf_desc_templ_t g_usb_conf_desc =
     USB_DESC_ENDPOINT,                    // bDescriptorType
     0x02,                                 // bEndpointAddress
     USB_ENDPOINT_TYPE_INTERRUPT,          // bmAttributes
-    SWAP(USB_OUT_PACKET_SIZE),              // wMaxPacketSize
+    SWAP(MAX_PACKET_SIZE_USB),              // wMaxPacketSize     //actually usb out max size
     EP2_POLLING_INTERVAL                  // bInterval
   }
 };

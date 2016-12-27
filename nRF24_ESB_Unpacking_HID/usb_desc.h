@@ -30,13 +30,13 @@
 //-----------------------------------------------------------------------------
 // Endpoint packet size definitions
 //-----------------------------------------------------------------------------
-#define USB_IN_PACKET_SIZE 0x34
-#define USB_OUT_PACKET_SIZE 0x0E
+#define USB_IN_PACKET_SIZE 0x40
+#define USB_OUT_PACKET_SIZE 0x40
 
 #define MAX_PACKET_SIZE_USB 0x20
 // Identical packets for ep 1/2. If different packet sizes are needed, 
 // an additional report descriptor must be made
-
+#define EP1_2_PACKET_SIZE 0x40
 
 //-----------------------------------------------------------------------------
 // Endpoint polling interval(in ms).
