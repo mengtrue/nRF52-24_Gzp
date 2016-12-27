@@ -216,10 +216,10 @@ static void esb_init( void )
     hal_nrf_set_operation_mode(HAL_NRF_PRX);                                   // Configure radio as primary receiver (PRX)
 	
 	  hal_nrf_close_pipe(HAL_NRF_ALL);
-    hal_nrf_open_pipe(HAL_NRF_PIPE2, true);	
-    hal_nrf_set_rx_payload_width((int)HAL_NRF_PIPE2, ESB_PACKET_LENGTH);       // Set payload width to ESB_PACKET_LENGTH
-    hal_nrf_open_pipe(HAL_NRF_PIPE3, true);	
-    hal_nrf_set_rx_payload_width((int)HAL_NRF_PIPE3, ESB_PACKET_LENGTH);       // Set payload width to ESB_PACKET_LENGTH
+    hal_nrf_open_pipe(LEFT_PIPE, true);	
+    hal_nrf_set_rx_payload_width(LEFT_PIPE, ESB_PACKET_LENGTH);       // Set payload width to ESB_PACKET_LENGTH
+    hal_nrf_open_pipe(RIGHT_PIPE, true);	
+    hal_nrf_set_rx_payload_width(RIGHT_PIPE, ESB_PACKET_LENGTH);       // Set payload width to ESB_PACKET_LENGTH
 	
 	  hal_nrf_set_rf_channel(ESB_CHANNEL);
 	  hal_nrf_set_datarate(HAL_NRF_2MBPS);
