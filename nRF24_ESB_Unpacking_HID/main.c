@@ -82,6 +82,7 @@ static void          copy_esb_packet_valid_data(uint8_t * des, uint8_t * src, ui
 static bool          checkSensorCrc(uint8_t * sensor_data, uint8_t crc);             //check sensor crc bit value
 static void          addZeroEnd(uint8_t * sensor_data);                              //after sensor_zie, sensor_data should be zero
 static void          copy_usb_out_to_esb(uint8_t hand, uint8_t * usb_data);          //usb out, left hand copy to left_usb_data, right hand copy to right_usb_data
+static void          mcu_wakeup_usb(void);                                           //wakeup usb from suspend (USBCON = 0x40)
 
 void main()
 {    
@@ -135,10 +136,11 @@ void main()
                 }
             }
         }
-        else if (hal_usb_get_state() == SUSPENDED)
+        /*else if (hal_usb_get_state() == SUSPENDED)
         {
-            hal_usb_wakeup();
-        }
+            //hal_usb_wakeup();
+            mcu_wakeup_usb();
+        }*/
     }
 }
 
@@ -170,19 +172,33 @@ NRF_ISR()
             {
                 hal_nrf_read_rx_payload(left_esb_data);
                 if (left_esb_data[0] != LEFT_PIPE)
+                {
                     GLOVE_MULTI_PACKET = true;
-                left_usb_in = true;
+                    glove_hand_sensor_data(LEFT_PIPE, left_esb_data[0] - 1);
+                }
+                else
+                {
+                    single_packet_usb_in(LEFT_PIPE);
+                }
+                //left_usb_in = true;
             }
             else if (hal_nrf_get_rx_data_source() == RIGHT_PIPE)
             {
 				        hal_nrf_read_rx_payload(right_esb_data);
                 if (right_esb_data[0] != RIGHT_PIPE)
+                {
                     GLOVE_MULTI_PACKET = true;
-                right_usb_in = true;                
+                    glove_hand_sensor_data(RIGHT_PIPE, right_esb_data[0] - 1);
+                }
+                else
+                {
+                    single_packet_usb_in(RIGHT_PIPE);
+                }
+                //right_usb_in = true;                
             }
             //hal_nrf_read_rx_payload(esb_in_buf);
 				}
-        if (GLOVE_MULTI_PACKET == false)
+        /*if (GLOVE_MULTI_PACKET == false)
         {
             if (left_usb_in)
                 single_packet_usb_in(LEFT_PIPE);
@@ -195,7 +211,7 @@ NRF_ISR()
                 glove_hand_sensor_data(LEFT_PIPE, left_esb_data[0] - 1);
             if (right_usb_in)
                 glove_hand_sensor_data(RIGHT_PIPE, right_esb_data[0] - 1);
-				}
+				}*/
         //esb_packet_received = true;
 				break;		
 	}
@@ -207,6 +223,11 @@ static void usb_hid_init( void )
 	  hal_usb_init(true, device_req_cb, reset_cb, resume_cb, suspend_cb);
 	  hal_usb_endpoint_config(0x81, USB_IN_PACKET_SIZE, ep_1_in_cb);
 	  hal_usb_endpoint_config(0x02, USB_OUT_PACKET_SIZE, ep_2_out_cb);
+}
+
+static void mcu_wakeup_usb( void )
+{
+    USBCON = 0x40;
 }
 
 static void esb_init( void )
@@ -279,6 +300,7 @@ static void glove_hand_sensor_data(uint8_t hand, uint8_t size)
                 {
                     addZeroEnd(left_sensor_data);
                     esb_packet_received = true;
+                    left_usb_in = true;
                 }
                 else
                 {
@@ -319,6 +341,7 @@ static void glove_hand_sensor_data(uint8_t hand, uint8_t size)
                 {
                     addZeroEnd(right_sensor_data);
                     esb_packet_received = true;
+                    right_usb_in = true;
                 }
                 else
                 {
