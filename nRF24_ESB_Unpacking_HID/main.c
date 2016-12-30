@@ -136,11 +136,10 @@ void main()
                 }
             }
         }
-        /*else if (hal_usb_get_state() == SUSPENDED)
+        else if (hal_usb_get_state() == SUSPENDED)
         {
-            //hal_usb_wakeup();
-            mcu_wakeup_usb();
-        }*/
+            hal_usb_wakeup();
+        }
     }
 }
 
@@ -223,11 +222,6 @@ static void usb_hid_init( void )
 	  hal_usb_init(true, device_req_cb, reset_cb, resume_cb, suspend_cb);
 	  hal_usb_endpoint_config(0x81, USB_IN_PACKET_SIZE, ep_1_in_cb);
 	  hal_usb_endpoint_config(0x02, USB_OUT_PACKET_SIZE, ep_2_out_cb);
-}
-
-static void mcu_wakeup_usb( void )
-{
-    USBCON = 0x40;
 }
 
 static void esb_init( void )
