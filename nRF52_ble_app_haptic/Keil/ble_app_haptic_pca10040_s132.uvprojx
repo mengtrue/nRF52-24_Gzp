@@ -47,8 +47,8 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>..\</OutputDirectory>
-          <OutputName>nrf52832_xxaa</OutputName>
+          <OutputDirectory>..\_build\</OutputDirectory>
+          <OutputName>Haptic_nrf52832_xxaa</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -136,7 +136,7 @@
             <DriverSelection>4099</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>Segger\JL2CM3.dll</Flash2>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>BLE_STACK_SUPPORT_REQD S132 NRF_SD_BLE_API_VERSION=3 BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET SOFTDEVICE_PRESENT NRF52832 NRF52 SWI_DISABLE0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\arm5_no_packs;..\config;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\ble_advertising;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\clock;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\common;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\delay;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\gpiote;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\hal;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\spi_slave;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\uart;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\button;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\experimental_section_vars;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fds;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fstorage;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\sensorsim;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\timer;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\common\softdevice_handler;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\s132\headers;..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp</IncludePath>
+              <IncludePath>..\Keil;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\ble_advertising;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\clock;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\common;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\delay;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\gpiote;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\hal;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\spi_slave;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\uart;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\button;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\experimental_section_vars;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fds;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fstorage;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\sensorsim;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\timer;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\common\softdevice_handler;..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\s132\headers;..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -382,17 +382,17 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>sdk_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\config\sdk_config.h</FilePath>
+              <FilePath>.\main.c</FilePath>
             </File>
             <File>
               <FileName>ble_glove.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ble_glove.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdk_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\sdk_config.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -402,12 +402,12 @@
             <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp.c</FilePath>
             </File>
             <File>
               <FileName>bsp_btn_ble.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp_btn_ble.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp_btn_ble.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -417,7 +417,7 @@
             <File>
               <FileName>license.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\..\license.txt</FilePath>
+              <FilePath>..\license.txt</FilePath>
             </File>
           </Files>
         </Group>
@@ -427,87 +427,87 @@
             <File>
               <FileName>ble_advdata.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_advdata.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_advdata.c</FilePath>
             </File>
             <File>
               <FileName>ble_conn_params.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_params.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_params.c</FilePath>
             </File>
             <File>
               <FileName>ble_conn_state.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_state.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_state.c</FilePath>
             </File>
             <File>
               <FileName>ble_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_srv_common.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_srv_common.c</FilePath>
             </File>
             <File>
               <FileName>ble_advertising.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\ble_advertising\ble_advertising.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\ble_advertising\ble_advertising.c</FilePath>
             </File>
             <File>
               <FileName>gatt_cache_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatt_cache_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatt_cache_manager.c</FilePath>
             </File>
             <File>
               <FileName>gatts_cache_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatts_cache_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatts_cache_manager.c</FilePath>
             </File>
             <File>
               <FileName>id_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\id_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\id_manager.c</FilePath>
             </File>
             <File>
               <FileName>peer_data.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data.c</FilePath>
             </File>
             <File>
               <FileName>peer_data_storage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data_storage.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data_storage.c</FilePath>
             </File>
             <File>
               <FileName>peer_database.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_database.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_database.c</FilePath>
             </File>
             <File>
               <FileName>peer_id.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_id.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_id.c</FilePath>
             </File>
             <File>
               <FileName>peer_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_manager.c</FilePath>
             </File>
             <File>
               <FileName>pm_buffer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_buffer.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_buffer.c</FilePath>
             </File>
             <File>
               <FileName>pm_mutex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_mutex.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_mutex.c</FilePath>
             </File>
             <File>
               <FileName>security_dispatcher.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_dispatcher.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_dispatcher.c</FilePath>
             </File>
             <File>
               <FileName>security_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_manager.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -517,27 +517,27 @@
             <File>
               <FileName>nrf_drv_spis.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\spi_slave\nrf_drv_spis.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\spi_slave\nrf_drv_spis.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\clock\nrf_drv_clock.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\clock\nrf_drv_clock.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_gpiote.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -547,67 +547,67 @@
             <File>
               <FileName>app_button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\button\app_button.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\button\app_button.c</FilePath>
             </File>
             <File>
               <FileName>app_error.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error.c</FilePath>
             </File>
             <File>
               <FileName>app_error_weak.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error_weak.c</FilePath>
-            </File>
-            <File>
-              <FileName>nrf_assert.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\nrf_assert.c</FilePath>
-            </File>
-            <File>
-              <FileName>sdk_mapped_flags.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\sdk_mapped_flags.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_fifo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fifo\app_fifo.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\timer\app_timer.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error_weak.c</FilePath>
             </File>
             <File>
               <FileName>app_util_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_util_platform.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_util_platform.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_assert.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\nrf_assert.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdk_mapped_flags.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\sdk_mapped_flags.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_fifo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fifo\app_fifo.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\timer\app_timer.c</FilePath>
             </File>
             <File>
               <FileName>crc16.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\crc16\crc16.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\crc16\crc16.c</FilePath>
             </File>
             <File>
               <FileName>fds.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fds\fds.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fds\fds.c</FilePath>
             </File>
             <File>
               <FileName>fstorage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fstorage\fstorage.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fstorage\fstorage.c</FilePath>
             </File>
             <File>
               <FileName>hardfault_implementation.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\hardfault\hardfault_implementation.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\hardfault\hardfault_implementation.c</FilePath>
             </File>
             <File>
               <FileName>sensorsim.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\sensorsim\sensorsim.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\sensorsim\sensorsim.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -617,12 +617,12 @@
             <File>
               <FileName>nrf_log_backend_serial.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_backend_serial.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_backend_serial.c</FilePath>
             </File>
             <File>
               <FileName>nrf_log_frontend.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_frontend.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_frontend.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -632,17 +632,17 @@
             <File>
               <FileName>RTT_Syscalls_KEIL.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
             </File>
             <File>
               <FileName>SEGGER_RTT.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT.c</FilePath>
             </File>
             <File>
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -652,7 +652,7 @@
             <File>
               <FileName>softdevice_handler.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1040,17 +1040,17 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>sdk_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\config\sdk_config.h</FilePath>
+              <FilePath>.\main.c</FilePath>
             </File>
             <File>
               <FileName>ble_glove.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ble_glove.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdk_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\sdk_config.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1060,12 +1060,12 @@
             <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp.c</FilePath>
             </File>
             <File>
               <FileName>bsp_btn_ble.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp_btn_ble.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\examples\bsp\bsp_btn_ble.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1075,7 +1075,7 @@
             <File>
               <FileName>license.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\..\license.txt</FilePath>
+              <FilePath>..\license.txt</FilePath>
             </File>
           </Files>
         </Group>
@@ -1085,87 +1085,87 @@
             <File>
               <FileName>ble_advdata.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_advdata.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_advdata.c</FilePath>
             </File>
             <File>
               <FileName>ble_conn_params.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_params.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_params.c</FilePath>
             </File>
             <File>
               <FileName>ble_conn_state.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_state.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_conn_state.c</FilePath>
             </File>
             <File>
               <FileName>ble_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_srv_common.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\common\ble_srv_common.c</FilePath>
             </File>
             <File>
               <FileName>ble_advertising.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\ble_advertising\ble_advertising.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\ble_advertising\ble_advertising.c</FilePath>
             </File>
             <File>
               <FileName>gatt_cache_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatt_cache_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatt_cache_manager.c</FilePath>
             </File>
             <File>
               <FileName>gatts_cache_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatts_cache_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\gatts_cache_manager.c</FilePath>
             </File>
             <File>
               <FileName>id_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\id_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\id_manager.c</FilePath>
             </File>
             <File>
               <FileName>peer_data.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data.c</FilePath>
             </File>
             <File>
               <FileName>peer_data_storage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data_storage.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_data_storage.c</FilePath>
             </File>
             <File>
               <FileName>peer_database.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_database.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_database.c</FilePath>
             </File>
             <File>
               <FileName>peer_id.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_id.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_id.c</FilePath>
             </File>
             <File>
               <FileName>peer_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\peer_manager.c</FilePath>
             </File>
             <File>
               <FileName>pm_buffer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_buffer.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_buffer.c</FilePath>
             </File>
             <File>
               <FileName>pm_mutex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_mutex.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\pm_mutex.c</FilePath>
             </File>
             <File>
               <FileName>security_dispatcher.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_dispatcher.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_dispatcher.c</FilePath>
             </File>
             <File>
               <FileName>security_manager.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_manager.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\ble\peer_manager\security_manager.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1175,27 +1175,27 @@
             <File>
               <FileName>nrf_drv_spis.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\spi_slave\nrf_drv_spis.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\spi_slave\nrf_drv_spis.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\clock\nrf_drv_clock.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\clock\nrf_drv_clock.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_gpiote.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1205,67 +1205,67 @@
             <File>
               <FileName>app_button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\button\app_button.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\button\app_button.c</FilePath>
             </File>
             <File>
               <FileName>app_error.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error.c</FilePath>
             </File>
             <File>
               <FileName>app_error_weak.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error_weak.c</FilePath>
-            </File>
-            <File>
-              <FileName>nrf_assert.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\nrf_assert.c</FilePath>
-            </File>
-            <File>
-              <FileName>sdk_mapped_flags.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\sdk_mapped_flags.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_fifo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fifo\app_fifo.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\timer\app_timer.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_error_weak.c</FilePath>
             </File>
             <File>
               <FileName>app_util_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_util_platform.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\app_util_platform.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_assert.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\nrf_assert.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdk_mapped_flags.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\util\sdk_mapped_flags.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_fifo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fifo\app_fifo.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\timer\app_timer.c</FilePath>
             </File>
             <File>
               <FileName>crc16.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\crc16\crc16.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\crc16\crc16.c</FilePath>
             </File>
             <File>
               <FileName>fds.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fds\fds.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fds\fds.c</FilePath>
             </File>
             <File>
               <FileName>fstorage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fstorage\fstorage.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\fstorage\fstorage.c</FilePath>
             </File>
             <File>
               <FileName>hardfault_implementation.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\hardfault\hardfault_implementation.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\hardfault\hardfault_implementation.c</FilePath>
             </File>
             <File>
               <FileName>sensorsim.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\sensorsim\sensorsim.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\sensorsim\sensorsim.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1275,12 +1275,12 @@
             <File>
               <FileName>nrf_log_backend_serial.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_backend_serial.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_backend_serial.c</FilePath>
             </File>
             <File>
               <FileName>nrf_log_frontend.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_frontend.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\libraries\log\src\nrf_log_frontend.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1290,17 +1290,17 @@
             <File>
               <FileName>RTT_Syscalls_KEIL.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
             </File>
             <File>
               <FileName>SEGGER_RTT.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT.c</FilePath>
             </File>
             <File>
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1310,7 +1310,7 @@
             <File>
               <FileName>softdevice_handler.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
+              <FilePath>..\..\..\nRF5_SDK_12.1.0_0d23e2a\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
             </File>
           </Files>
         </Group>
