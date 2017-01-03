@@ -57,7 +57,7 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 
-#include "ble_glove.h"
+#include "ble_haptic.h"
 #include "nrf_drv_spis.h"
 
 #include "app_timer.h"

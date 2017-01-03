@@ -12,7 +12,7 @@
 #include "sdk_config.h"
 
 #include "sdk_common.h"
-#include "ble_glove.h"
+#include "ble_haptic.h"
 #include "ble_hci.h"
 #include "ble_srv_common.h"
 

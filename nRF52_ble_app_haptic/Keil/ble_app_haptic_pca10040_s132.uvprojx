@@ -385,14 +385,14 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>ble_glove.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ble_glove.c</FilePath>
-            </File>
-            <File>
               <FileName>sdk_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\sdk_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>ble_haptic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ble_haptic.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1043,14 +1043,14 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>ble_glove.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ble_glove.c</FilePath>
-            </File>
-            <File>
               <FileName>sdk_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\sdk_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>ble_haptic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ble_haptic.c</FilePath>
             </File>
           </Files>
         </Group>
