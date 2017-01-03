@@ -152,13 +152,6 @@
 #define BLE_DIS_ENABLED 0
 #endif
 
-// <q> BLE_GLO_ENABLED  - ble_glo - Glove Service
- 
-
-#ifndef BLE_GLO_ENABLED
-#define BLE_GLO_ENABLED 1
-#endif
-
 // <q> BLE_GLS_ENABLED  - ble_gls - Glucose Service
  
 

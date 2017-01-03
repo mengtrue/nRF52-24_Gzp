@@ -106,18 +106,18 @@
 #define SPIS_INSTANCE                   1                                           /**< SPIS instance index */
 
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                            /**< Handle of the current connection. */
-static ble_glo_t m_glo;                                                             /**< Structure used to identify the glove service. */
+static ble_haptic_t m_haptic;                                                             /**< Structure used to identify the glove service. */
 
 // YOUR_JOB: Use UUIDs for service(s) used in your application.
-static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_GLOVE_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}}; /**< Universally unique service identifiers. */
+static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_HAPTIC_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}}; /**< Universally unique service identifiers. */
 
 #define TEST "123"
-static uint8_t glove_report_value[GLOVE_REPROT_DATA_LENGTH];                        //glove report data array
-static uint8_t glove_rumble_value[GLOVE_RUMBLE_DATA_LENGTH] = TEST;   //glove rumble data array
+static uint8_t haptic_report_value[HAPTIC_REPROT_DATA_LENGTH];                        //glove report data array
+static uint8_t haptic_rumble_value[HAPTIC_RUMBLE_DATA_LENGTH] = TEST;   //glove rumble data array
 
 static const nrf_drv_spis_t spis = NRF_DRV_SPIS_INSTANCE(SPIS_INSTANCE);            /** SPIS instance */
-static uint8_t m_tx_buf[GLOVE_RUMBLE_DATA_LENGTH];
-static uint8_t m_rx_buf[GLOVE_REPROT_DATA_LENGTH];
+static uint8_t m_tx_buf[HAPTIC_RUMBLE_DATA_LENGTH];
+static uint8_t m_rx_buf[HAPTIC_REPROT_DATA_LENGTH];
 
 static void advertising_start(void);
 
@@ -284,10 +284,7 @@ static void timers_init(void)
     /* YOUR_JOB: Create any timers to be used by the application.
                  Below is an example of how to create a timer.
                  For every new timer needed, increase the value of the macro APP_TIMER_MAX_TIMERS by
-                 one. 
-       uint32_t err_code;
-       err_code = app_timer_create(&m_glove_timer_id, APP_TIMER_MODE_REPEATED, glove_timeout_handler);
-       APP_ERROR_CHECK(err_code);*/
+                 one. */
 }
 
 /**@brief Function for the GAP initialization.
@@ -349,12 +346,12 @@ static void gap_params_init(void)
     }
    }*/
 	 
-static void glo_flag_handler(ble_glo_t * p_glo, uint8_t *p_data, uint16_t length)
+static void haptic_flag_handler(ble_haptic_t * p_haptic, uint8_t *p_data, uint16_t length)
 {
 	NRF_LOG_INFO("receive Flag data is %d, length = %d\r\n", p_data[0], length);
 }
 
-static void glo_rumble_handler(ble_glo_t * p_glo, uint8_t * p_data, uint16_t length)
+static void haptic_rumble_handler(ble_haptic_t * p_haptic, uint8_t * p_data, uint16_t length)
 {
 	NRF_LOG_INFO("receive Rumble data is ");
 	NRF_LOG_HEXDUMP_INFO(p_data, strlen((const char *) p_data));
@@ -362,7 +359,7 @@ static void glo_rumble_handler(ble_glo_t * p_glo, uint8_t * p_data, uint16_t len
 	NRF_LOG_INFO("low : %x, high : %x \r\n", (uint8_t)p_data[0], (uint8_t)p_data[1]);
 	uint16_t data = (p_data[1] << 8) | p_data[0];
 	NRF_LOG_INFO("convert data : %d\r\n", (uint16_t)data);
-	memcpy(glove_rumble_value, p_data, GLOVE_RUMBLE_DATA_LENGTH);
+	memcpy(haptic_rumble_value, p_data, HAPTIC_RUMBLE_DATA_LENGTH);
 }
 
 /**@brief Function for initializing services that will be used by the application.
@@ -370,14 +367,14 @@ static void glo_rumble_handler(ble_glo_t * p_glo, uint8_t * p_data, uint16_t len
 static void services_init(void)
 {
 	  uint32_t                err_code;
-	  ble_glo_init_t          glove_init;
+	  ble_haptic_init_t          haptic_init;
 	
-	  memset(&glove_init, 0, sizeof(glove_init));
-	  glove_init.support_notification           = true;
-	  glove_init.glo_flag_handler               = glo_flag_handler;
-	  glove_init.glo_rumble_handler             = glo_rumble_handler;
+	  memset(&haptic_init, 0, sizeof(haptic_init));
+	  haptic_init.support_notification           = true;
+	  haptic_init.haptic_flag_handler               = haptic_flag_handler;
+	  haptic_init.haptic_rumble_handler             = haptic_rumble_handler;
 
-    err_code = ble_glo_init(&m_glo, &glove_init);
+    err_code = ble_haptic_init(&m_haptic, &haptic_init);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -427,7 +424,7 @@ static void conn_params_init(void)
     cp_init.first_conn_params_update_delay = FIRST_CONN_PARAMS_UPDATE_DELAY;
     cp_init.next_conn_params_update_delay  = NEXT_CONN_PARAMS_UPDATE_DELAY;
     cp_init.max_conn_params_update_count   = MAX_CONN_PARAMS_UPDATE_COUNT;
-    cp_init.start_on_notify_cccd_handle    = m_glo.glo_report_handles.cccd_handle;
+    cp_init.start_on_notify_cccd_handle    = m_haptic.haptic_report_handles.cccd_handle;
     cp_init.disconnect_on_fail             = false;
     cp_init.evt_handler                    = on_conn_params_evt;
     cp_init.error_handler                  = conn_params_error_handler;
@@ -503,7 +500,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             NRF_LOG_INFO("Connected.\r\n");
 				    LEDS_ON(BSP_LED_0_MASK);
             m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
-				    APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, m_tx_buf, GLOVE_RUMBLE_DATA_LENGTH, m_rx_buf, GLOVE_REPROT_DATA_LENGTH));
+				    APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, m_tx_buf, HAPTIC_RUMBLE_DATA_LENGTH, m_rx_buf, HAPTIC_REPROT_DATA_LENGTH));
             break; // BLE_GAP_EVT_CONNECTED
 
         case BLE_GATTC_EVT_TIMEOUT:
@@ -584,7 +581,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
      * Remember to call ble_conn_state_on_ble_evt before calling any ble_conns_state_* functions. */
     ble_conn_state_on_ble_evt(p_ble_evt);
     pm_on_ble_evt(p_ble_evt);
-		ble_glo_on_ble_evt(& m_glo, p_ble_evt);
+		ble_haptic_on_ble_evt(& m_haptic, p_ble_evt);
     ble_conn_params_on_ble_evt(p_ble_evt);
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
@@ -752,14 +749,14 @@ void spis_event_handler(nrf_drv_spis_event_t event)
 	{
 		uint32_t     err_code;
 		NRF_LOG_INFO("send %x %x %x, length %d\r\n", (uint8_t)m_tx_buf[0], (uint8_t)m_tx_buf[1], (uint8_t)m_tx_buf[2], sizeof(m_tx_buf));
-		memcpy(glove_report_value, m_rx_buf, GLOVE_REPROT_DATA_LENGTH);
+		memcpy(haptic_report_value, m_rx_buf, HAPTIC_REPROT_DATA_LENGTH);
 		NRF_LOG_INFO("receive last : %x \n", m_rx_buf[19]);
-		err_code = ble_glo_report_send(&m_glo, glove_report_value, GLOVE_REPROT_DATA_LENGTH);
-		if(err_code == NRF_SUCCESS || m_glo.conn_handle != BLE_CONN_HANDLE_INVALID)
+		err_code = ble_haptic_report_send(&m_haptic, haptic_report_value, HAPTIC_REPROT_DATA_LENGTH);
+		if(err_code == NRF_SUCCESS || m_haptic.conn_handle != BLE_CONN_HANDLE_INVALID)
 		{
-			memset(m_rx_buf, 0, GLOVE_REPROT_DATA_LENGTH+1);
-			memcpy(m_tx_buf, glove_rumble_value, GLOVE_RUMBLE_DATA_LENGTH);
-			APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, m_tx_buf, GLOVE_RUMBLE_DATA_LENGTH, m_rx_buf, GLOVE_REPROT_DATA_LENGTH));
+			memset(m_rx_buf, 0, HAPTIC_REPROT_DATA_LENGTH+1);
+			memcpy(m_tx_buf, haptic_rumble_value, HAPTIC_RUMBLE_DATA_LENGTH);
+			APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, m_tx_buf, HAPTIC_RUMBLE_DATA_LENGTH, m_rx_buf, HAPTIC_REPROT_DATA_LENGTH));
 			i++;
 		}    
 	}
@@ -774,7 +771,7 @@ void spis_init()
 		spis_config.mosi_pin              = APP_SPIS_MOSI_PIN;
 		spis_config.sck_pin               = APP_SPIS_SCK_PIN;
 		APP_ERROR_CHECK(nrf_drv_spis_init(&spis, &spis_config, spis_event_handler));
-	  memcpy(m_tx_buf, glove_rumble_value, GLOVE_RUMBLE_DATA_LENGTH);
+	  memcpy(m_tx_buf, haptic_rumble_value, HAPTIC_RUMBLE_DATA_LENGTH);
 }
 
 /**@brief Function for application main entry.
@@ -806,7 +803,7 @@ int main(void)
     spis_init();
 		
     // Start execution.
-    NRF_LOG_INFO("Goertek Glove started\r\n");
+    NRF_LOG_INFO("Goertek Haptic started\r\n");
     advertising_start();
     // Enter main loop.
     for (;;)
