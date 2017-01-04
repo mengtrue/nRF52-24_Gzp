@@ -6,6 +6,63 @@
 #ifdef USE_APP_CONFIG
 #include "app_config.h"
 #endif
+// <h> Application 
+
+//==========================================================
+// <h> SPIS_CONFIGURATION - Spi slave configuration
+
+//==========================================================
+// <o> APP_SPIS_SCK_PIN - Pin number  <0-31> 
+
+
+#ifndef APP_SPIS_SCK_PIN
+#define APP_SPIS_SCK_PIN 27                      //3
+#endif
+
+// <o> APP_SPIS_MISO_PIN - Pin number  <0-31> 
+
+
+#ifndef APP_SPIS_MISO_PIN
+#define APP_SPIS_MISO_PIN 28
+#endif
+
+// <o> APP_SPIS_MOSI_PIN - Pin number  <0-31> 
+
+
+#ifndef APP_SPIS_MOSI_PIN
+#define APP_SPIS_MOSI_PIN 30                     //4
+#endif
+
+// <o> APP_SPIS_CS_PIN - Pin number  <0-31> 
+
+
+#ifndef APP_SPIS_CS_PIN
+#define APP_SPIS_CS_PIN 29
+#endif
+
+// <o> APP_SPIS_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef APP_SPIS_IRQ_PRIORITY
+#define APP_SPIS_IRQ_PRIORITY 7
+#endif
+
+// </h> 
+//==========================================================
+
+// </h> 
+//==========================================================
+
 // <h> nRF_Drivers 
 
 //==========================================================
@@ -153,6 +210,140 @@
 // </e>
 
 #endif //PERIPHERAL_RESOURCE_SHARING_ENABLED
+// </e>
+
+// <e> SPIS_ENABLED - nrf_drv_spis - SPI Slave driver
+//==========================================================
+#ifndef SPIS_ENABLED
+#define SPIS_ENABLED 1
+#endif
+#if  SPIS_ENABLED
+// <o> SPIS_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef SPIS_DEFAULT_CONFIG_IRQ_PRIORITY
+#define SPIS_DEFAULT_CONFIG_IRQ_PRIORITY 7
+#endif
+
+// <o> SPIS_DEFAULT_MODE  - Mode
+ 
+// <0=> MODE_0 
+// <1=> MODE_1 
+// <2=> MODE_2 
+// <3=> MODE_3 
+
+#ifndef SPIS_DEFAULT_MODE
+#define SPIS_DEFAULT_MODE 0
+#endif
+
+// <o> SPIS_DEFAULT_BIT_ORDER  - SPIS default bit order
+ 
+// <0=> MSB first 
+// <1=> LSB first 
+
+#ifndef SPIS_DEFAULT_BIT_ORDER
+#define SPIS_DEFAULT_BIT_ORDER 0
+#endif
+
+// <o> SPIS_DEFAULT_DEF - SPIS default DEF character  <0-255> 
+
+
+#ifndef SPIS_DEFAULT_DEF
+#define SPIS_DEFAULT_DEF 255
+#endif
+
+// <o> SPIS_DEFAULT_ORC - SPIS default ORC character  <0-255> 
+
+
+#ifndef SPIS_DEFAULT_ORC
+#define SPIS_DEFAULT_ORC 255
+#endif
+
+// <q> SPIS0_ENABLED  - Enable SPIS0 instance
+ 
+
+#ifndef SPIS0_ENABLED
+#define SPIS0_ENABLED 0
+#endif
+
+// <q> SPIS1_ENABLED  - Enable SPIS1 instance
+ 
+
+#ifndef SPIS1_ENABLED
+#define SPIS1_ENABLED 1
+#endif
+
+// <q> SPIS2_ENABLED  - Enable SPIS2 instance
+ 
+
+#ifndef SPIS2_ENABLED
+#define SPIS2_ENABLED 0
+#endif
+
+// <e> SPIS_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef SPIS_CONFIG_LOG_ENABLED
+#define SPIS_CONFIG_LOG_ENABLED 0
+#endif
+#if  SPIS_CONFIG_LOG_ENABLED
+// <o> SPIS_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef SPIS_CONFIG_LOG_LEVEL
+#define SPIS_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> SPIS_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef SPIS_CONFIG_INFO_COLOR
+#define SPIS_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> SPIS_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef SPIS_CONFIG_DEBUG_COLOR
+#define SPIS_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //SPIS_CONFIG_LOG_ENABLED
+// </e>
+
+#endif //SPIS_ENABLED
 // </e>
 
 // <e> UART_ENABLED - nrf_drv_uart - UART/UARTE peripheral driver

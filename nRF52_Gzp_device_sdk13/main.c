@@ -41,10 +41,11 @@
  */
 #include "nrf_gzll.h"
 #include "nrf_gzp.h"
-#include "bsp.h"
 #include "app_error.h"
 #include "nrf_gzll_error.h"
 #include "nrf_delay.h"
+
+#include "nrf_drv_spis.h"
 
 #define NRF_LOG_MODULE_NAME "APP"
 #include "nrf_log.h"
@@ -77,45 +78,19 @@ static bool nRF52_device_send_crypt_data(void);
 static bool nRF52_device_send_data(void);
 static void nRF52_device_set_payload(void);
 static void nRF52_device_set_pipe(uint8_t pipe);
-static void nRF52_device_ack_receive();
+static void nRF52_device_ack_receive(void);
 
-/**
- * @brief Function to read the button states.
- *
- * @return Returns the states of buttons.
- */
-static uint8_t input_get(void)
-{
-    uint8_t result = 0;
-    for (uint32_t i = 0; i < BUTTONS_NUMBER; i++)
-    {
-        if (bsp_button_is_pressed(i))
-        {
-            result |= (1 << i);
-        }
-    }
-
-    return ~(result);
-}
-
-
-/**
- * @brief Initialize the BSP modules.
- */
-static void ui_init(void)
-{
-    // BSP initialization.
-    uint32_t err_code = bsp_init(BSP_INIT_BUTTONS, NULL, NULL);
-
-    APP_ERROR_CHECK(err_code);
-
-    // Set up logger
-    err_code = NRF_LOG_INIT(NULL);
-    APP_ERROR_CHECK(err_code);
-
-    NRF_LOG_INFO("Gazell dynamic pairing example. Device mode.\r\n");
-    NRF_LOG_FLUSH();
-}
+//SPI
+#define SPIS_INSTANCE          1
+#define SPIS_RX_LENGTH          100
+static const nrf_drv_spis_t spis = NRF_DRV_SPIS_INSTANCE(SPIS_INSTANCE);
+static volatile bool spis_xfer_done;
+static uint8_t       spis_rx_sensor_length;
+static uint8_t       spis_tx_sensor_length;
+static uint8_t       m_spi_tx_buf[SPIS_RX_LENGTH];
+static uint8_t       m_spi_rx_buf[SPIS_RX_LENGTH];
+static void spis_event_handle(nrf_drv_spis_event_t event);
+static void spis_init(void);
 
 static void nRF52_device_wait_host()
 {
@@ -204,6 +179,27 @@ static void nRF52_device_ack_receive()
     }
 }
 
+static void spis_event_handle(nrf_drv_spis_event_t event)
+{
+    if (event.evt_type == NRF_DRV_SPIS_XFER_DONE)
+    {
+        spis_xfer_done = true;
+        spis_rx_sensor_length = event.rx_amount;
+			  NRF_LOG_INFO("SPIS Transfer completed. Received length : %d\r\n", spis_rx_sensor_length);
+	  }
+}
+
+static void spis_init()
+{
+    nrf_drv_spis_config_t spis_config = NRF_DRV_SPIS_DEFAULT_CONFIG;
+    spis_config.csn_pin               = APP_SPIS_CS_PIN;
+    spis_config.miso_pin              = APP_SPIS_MISO_PIN;
+    spis_config.mosi_pin              = APP_SPIS_MOSI_PIN;
+    spis_config.sck_pin               = APP_SPIS_SCK_PIN;
+
+    APP_ERROR_CHECK(nrf_drv_spis_init(&spis, &spis_config, spis_event_handle));
+}
+
 /*****************************************************************************/
 /**
  * @brief Main function.
@@ -213,8 +209,7 @@ static void nRF52_device_ack_receive()
 /*****************************************************************************/
 int main(void)
 {
-    // Set up the user interface (buttons and LEDs)
-    ui_init();
+    spis_init();
 
     // Initialize the Gazell Link Layer
     bool result_value = nrf_gzll_init(NRF_GZLL_MODE_DEVICE);

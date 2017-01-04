@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_SD_HW_RESOURCES BSP_SIMPLE NRF52832 NRF52 NRF52_PAN_58 NRF52_PAN_64 BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_54 CONFIG_GPIO_AS_PINRESET NRF52_PAN_55 GAZELL_PRESENT GAZELL_ALTERNATIVE_RESOURCES SWI_DISABLE0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\config;..\..\..\config;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\boards;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\common;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\delay;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\gpiote;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\hal;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\uart;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\bsp;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\log;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\log\src;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\timer;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\util;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\proprietary_rf\gzll</IncludePath>
+              <IncludePath>..\config;..\..\..\config;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\common;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\delay;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\gpiote;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\hal;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\spi_slave;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\uart;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\log;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\log\src;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\timer;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\util;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\proprietary_rf\gzll;..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\external\segger_rtt</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -402,21 +402,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Board Support</GroupName>
-          <Files>
-            <File>
-              <FileName>bsp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\bsp\bsp.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_nfc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\libraries\bsp\bsp_nfc.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Documentation</GroupName>
           <Files>
             <File>
@@ -453,6 +438,11 @@
               <FileName>nrf_nvmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\hal\nrf_nvmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_spis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\nRF5_SDK_13.0.0-1.alpha_055eef3\components\drivers_nrf\spi_slave\nrf_drv_spis.c</FilePath>
             </File>
           </Files>
         </Group>
