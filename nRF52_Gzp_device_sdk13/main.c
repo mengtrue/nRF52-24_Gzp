@@ -36,7 +36,7 @@
  *
  * The application alternates between sending the packets encrypted
  * through the pairing library or directly as plain text using pipe
- * UNENCRYPTED_DATA_PIPE.
+ * UNENCRYPTED_gzp_data_pipe.
  *
  */
 #include "nrf_gzll.h"
@@ -54,7 +54,7 @@
 /*****************************************************************************/
 /** @name Configuration */
 /*****************************************************************************/
-#define UNENCRYPTED_DATA_PIPE     2   ///< Pipes 0 and 1 are reserved for GZP pairing and data. See nrf_gzp.h.
+//< Pipes 0 and 1 are reserved for GZP pairing and data. See nrf_gzp.h.
 #define NRF_GZLLDE_RXPERIOD_DIV_2 600//504 ///< RXPERIOD/2 on LU1 = timeslot period on nRF5x.
 
 // Ensure that we try all channels before giving up
@@ -63,18 +63,16 @@
 
 //GZP
 static gzp_id_req_res_t id_req_status   = GZP_ID_RESP_NO_REQUEST;
-static uint8_t          data_pipe;
-static bool             tx_success      = false;
-static bool             send_crypt_data = false;     
-static uint8_t          payload[NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH]; ///< Payload to send to Host. Data and acknowledgement payloads
-static uint8_t          ack[NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH];
-static uint32_t         ack_length      = NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH;
+static uint8_t          gzp_data_pipe;
+static bool             gzp_tx_success      = false;    
+static uint8_t          gzp_tx_payload[NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH]; ///< Payload to send to Host. Data and acknowledgement payloads
+static uint8_t          gzp_rx_payload[NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH];
+static uint32_t         gzp_rx_payload_length      = NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH;
 
 //test
-static int8_t paired = -2;
+static int8_t gzp_paired = -2;
 static void nRF52_device_wait_host(void);
 static void nRF52_device_send_pair_request(void);
-static bool nRF52_device_send_crypt_data(void);
 static bool nRF52_device_send_data(void);
 static void nRF52_device_set_payload(void);
 static void nRF52_device_set_pipe(uint8_t pipe);
@@ -118,11 +116,6 @@ static void nRF52_device_send_pair_request()
     }
 }
 
-static bool nRF52_device_send_crypt_data()
-{
-	  return gzp_crypt_data_send(payload, GZP_ENCRYPTED_USER_DATA_MAX_LENGTH);
-}
-
 static bool nRF52_device_send_data()
 {
     bool result = true;
@@ -131,15 +124,14 @@ static bool nRF52_device_send_data()
     nrf_gzp_reset_tx_success();
 
     // Send packet as plain text.
-    //if (nrf_gzll_add_packet_to_tx_fifo(UNENCRYPTED_DATA_PIPE, payload, GZP_MAX_FW_PAYLOAD_LENGTH))
-    if (nrf_gzll_add_packet_to_tx_fifo(data_pipe, payload, NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH))
+    if (nrf_gzll_add_packet_to_tx_fifo(gzp_data_pipe, gzp_tx_payload, NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH))
     {
         while (!nrf_gzp_tx_complete())
         {
             __WFI();
         }
         result = nrf_gzp_tx_success();
-        NRF_LOG_INFO("tx success : %d\r\n", tx_success);
+        NRF_LOG_INFO("gzp tx success : %d\r\n", gzp_tx_success);
         NRF_LOG_FLUSH();
     }
     else
@@ -154,27 +146,27 @@ static void nRF52_device_set_payload()
 {
     uint8_t i = 0;
     for (i = 0; i < NRF_GZLL_CONST_MAX_PAYLOAD_LENGTH; i++)
-        payload[i] = i;
-    payload[0] = data_pipe;
+        gzp_tx_payload[i] = i;
+    gzp_tx_payload[0] = gzp_data_pipe;
 }
 
 static void nRF52_device_set_pipe(uint8_t pipe)
 {
-    data_pipe = pipe;	
+    gzp_data_pipe = pipe;	
 }
 
 static void nRF52_device_ack_receive()
 {
     uint8_t error;
-    if (nrf_gzll_fetch_packet_from_rx_fifo(data_pipe, ack, &ack_length))
+    if (nrf_gzll_fetch_packet_from_rx_fifo(gzp_data_pipe, gzp_rx_payload, &gzp_rx_payload_length))
     {
-			  NRF_LOG_INFO("ACK received : %d\r\n", ack[ack_length - 1]);
+			  NRF_LOG_INFO("GZP ACK received : %d\r\n", gzp_rx_payload[gzp_rx_payload_length - 1]);
         NRF_LOG_FLUSH();
     }
     else
     {
         error = nrf_gzll_get_error_code();
-        NRF_LOG_INFO("ACK received error is %d\r\n", error);
+        NRF_LOG_INFO("GZP ACK received error is %d\r\n", error);
         NRF_LOG_FLUSH();
     }
 }
@@ -238,38 +230,25 @@ int main(void)
 
 		for (;;)
     {
-        //payload[0] = input_get();
-        NRF_LOG_INFO("paired is %d\r\n", paired);
-        tx_success = false;
+        NRF_LOG_INFO("gzp paired is %d\r\n", gzp_paired);
+        gzp_tx_success = false;
 
-        // Send every other packet as encrypted data.
-        if (send_crypt_data)
-        {
-            if (paired < 0)
-                tx_success = false;
-						else if (nrf_gzll_get_tx_fifo_packet_count(data_pipe) < 3)
-                // Send encrypted packet using the Gazell pairing library.
-                tx_success = nRF52_device_send_crypt_data();
-        }
-        else
-        {
-            if (paired < 0)
-                tx_success = false;
-            else if (nrf_gzll_get_tx_fifo_packet_count(data_pipe) < 3)
-                tx_success = nRF52_device_send_data();
-        }
+        if (gzp_paired < 0)
+            gzp_tx_success = false;
+        else if (nrf_gzll_get_tx_fifo_packet_count(gzp_data_pipe) < 3)
+            gzp_tx_success = nRF52_device_send_data();
 
         // Check if data transfer failed.
-        if (!tx_success)
+        if (!gzp_tx_success)
         {
             NRF_LOG_ERROR("Gazelle: transmission failed\r\n");
             NRF_LOG_FLUSH();
 
-            paired = gzp_get_pairing_status();
-            if (paired < 0)
+            gzp_paired = gzp_get_pairing_status();
+            if (gzp_paired < 0)
                 nRF52_device_send_pair_request();
         }
-				else if (nrf_gzll_get_rx_fifo_packet_count(data_pipe) > 0)
+				else if (nrf_gzll_get_rx_fifo_packet_count(gzp_data_pipe) > 0)
         {
             nRF52_device_ack_receive();
         }
