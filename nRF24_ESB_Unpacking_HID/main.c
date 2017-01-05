@@ -303,7 +303,7 @@ static void glove_hand_sensor_data(uint8_t hand, uint8_t size)
                 }
                 left_packet_index = 0;
             }
-		    }
+		}
         else
         {
             left_usb_in = false;
