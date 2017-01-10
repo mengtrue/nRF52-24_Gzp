@@ -59,6 +59,7 @@
 
 #include "ble_glove.h"
 #include "nrf_drv_spis.h"
+#include "nrf_delay.h"
 
 #include "app_timer.h"
 #include "nrf_drv_clock.h"
@@ -75,7 +76,7 @@
 #define CENTRAL_LINK_COUNT              0                                           /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT           1                                           /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
-#define DEVICE_NAME                     "Glove"                                     /**< Name of device. Will be included in the advertising data. */
+#define DEVICE_NAME                     "Glove11"                                     /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "Goertek"                                   /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL                64                                         /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms). */
 #define APP_ADV_TIMEOUT_IN_SECONDS      180                                         /**< The advertising timeout in units of seconds. */
@@ -775,6 +776,23 @@ void spis_init()
 		spis_config.sck_pin               = APP_SPIS_SCK_PIN;
 		APP_ERROR_CHECK(nrf_drv_spis_init(&spis, &spis_config, spis_event_handler));
 	  memcpy(m_tx_buf, glove_rumble_value, GLOVE_RUMBLE_DATA_LENGTH);
+
+    memset(glove_report_value, 0, GLOVE_REPROT_DATA_LENGTH * 2);
+}
+
+void generate_sensor_data()
+{
+    uint8_t i = 0;
+    for (i = 0; i < GLOVE_REPROT_DATA_LENGTH; i++)
+        glove_report_value[i]++;
+}
+
+void test_sensor_data_spis()
+{
+    uint32_t     err_code;
+    generate_sensor_data();
+    err_code = ble_glo_report_send(&m_glo, glove_report_value, GLOVE_REPROT_DATA_LENGTH);
+	  NRF_LOG_INFO("BLE send : %d\r\n", err_code);
 }
 
 /**@brief Function for application main entry.
@@ -811,10 +829,15 @@ int main(void)
     // Enter main loop.
     for (;;)
     {
+        if (m_glo.conn_handle != BLE_CONN_HANDLE_INVALID)
+            test_sensor_data_spis();
+
         if (NRF_LOG_PROCESS() == false)
         {
             power_manage();
         }
+
+        nrf_delay_ms(20);
     }
 }
 
