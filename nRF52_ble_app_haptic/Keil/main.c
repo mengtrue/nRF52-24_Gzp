@@ -58,9 +58,10 @@
 #include "nrf_log_ctrl.h"
 
 #include "ble_haptic.h"
+#include "nrf_drv_spi.h"
 #include "nrf_drv_spis.h"
+#include "nrf_delay.h"
 
-#include "app_timer.h"
 #include "nrf_drv_clock.h"
 #include "nrf_drv_gpiote.h"
 
@@ -103,23 +104,50 @@
 
 #define DEAD_BEEF                       0xDEADBEEF                                  /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
 
-#define SPIS_INSTANCE                   1                                           /**< SPIS instance index */
-
-static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                            /**< Handle of the current connection. */
-static ble_haptic_t m_haptic;                                                             /**< Structure used to identify the glove service. */
-
-// YOUR_JOB: Use UUIDs for service(s) used in your application.
-static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_HAPTIC_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}}; /**< Universally unique service identifiers. */
-
 #define TEST "123"
-static uint8_t haptic_report_value[HAPTIC_REPROT_DATA_LENGTH];                        //glove report data array
-static uint8_t haptic_rumble_value[HAPTIC_RUMBLE_DATA_LENGTH] = TEST;   //glove rumble data array
+#define SPI_INSTANCE                    0
+static const nrf_drv_spi_t  spi  = NRF_DRV_SPI_INSTANCE(SPI_INSTANCE);
+static uint8_t              m_tx_buf[HAPTIC_RUMBLE_DATA_LENGTH];
+static uint8_t              m_rx_buf[HAPTIC_REPROT_DATA_LENGTH];
 
-static const nrf_drv_spis_t spis = NRF_DRV_SPIS_INSTANCE(SPIS_INSTANCE);            /** SPIS instance */
-static uint8_t m_tx_buf[HAPTIC_RUMBLE_DATA_LENGTH];
-static uint8_t m_rx_buf[HAPTIC_REPROT_DATA_LENGTH];
+static ble_uuid_t           m_adv_uuids[] = {{BLE_UUID_HAPTIC_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}};       /**< Universally unique service identifiers. */
+static uint16_t             m_conn_handle = BLE_CONN_HANDLE_INVALID;                                       /**< Handle of the current connection. */
+static ble_haptic_t         m_haptic;                                                                      /**< Structure used to identify the glove service. */
+static uint8_t              haptic_report_value[HAPTIC_REPROT_DATA_LENGTH];                                //haptic report data array
+static uint8_t              haptic_rumble_value[HAPTIC_RUMBLE_DATA_LENGTH] = TEST;                         //haptic rumble data array
 
+// Sys
+static void sys_evt_dispatch(uint32_t sys_evt);
+
+// Peer Manager
+static void pm_evt_handler(pm_evt_t const * p_evt);
+static void peer_manager_init(bool erase_bonds);
+
+// Power Manager
+static void power_manage(void);
+
+// BLE
+static void gap_params_init(void);
 static void advertising_start(void);
+static void services_init(void);
+static void on_conn_params_evt(ble_conn_params_evt_t * p_evt);
+static void conn_params_error_handler(uint32_t nrf_error);
+static void conn_params_init(void);
+static void sleep_mode_enter(void);
+static void on_adv_evt(ble_adv_evt_t ble_adv_evt);
+static void on_ble_evt(ble_evt_t * p_ble_evt);
+static void ble_evt_dispatch(ble_evt_t * p_ble_evt);
+static void ble_stack_init(void);
+static void advertising_init(void);
+
+// SPI
+static void spi_init(void);
+void spi_event_handler(nrf_drv_spi_evt_t const * p_event);
+
+// Haptic
+static void haptic_flag_handler(ble_haptic_t * p_haptic, uint8_t *p_data, uint16_t length);
+static void haptic_rumble_handler(ble_haptic_t * p_haptic, uint8_t * p_data, uint16_t length);
+static void nRF52_ble_to_mcu_via_spi(void);
 
 /**@brief Callback function for asserts in the SoftDevice.
  *
@@ -145,6 +173,7 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 static void pm_evt_handler(pm_evt_t const * p_evt)
 {
     ret_code_t err_code;
+    NRF_LOG_DEBUG("pm_evt_handler evt.id is %d\r\n", p_evt->evt_id);
 
     switch (p_evt->evt_id)
     {
@@ -319,47 +348,35 @@ static void gap_params_init(void)
     err_code = sd_ble_gap_ppcp_set(&gap_conn_params);
     APP_ERROR_CHECK(err_code);
 }
-
-
-/**@brief Function for handling the YYY Service events.
- * YOUR_JOB implement a service handler function depending on the event the service you are using can generate
- *
- * @details This function will be called for all YY Service events which are passed to
- *          the application.
- *
- * @param[in]   p_yy_service   YY Service structure.
- * @param[in]   p_evt          Event received from the YY Service.
- *
- *
-   static void on_yys_evt(ble_yy_service_t     * p_yy_service,
-                       ble_yy_service_evt_t * p_evt)
-   {
-    switch (p_evt->evt_type)
-    {
-        case BLE_YY_NAME_EVT_WRITE:
-            APPL_LOG("[APPL]: charact written with value %s. \r\n", p_evt->params.char_xx.value.p_str);
-            break;
-
-        default:
-            // No implementation needed.
-            break;
-    }
-   }*/
 	 
 static void haptic_flag_handler(ble_haptic_t * p_haptic, uint8_t *p_data, uint16_t length)
 {
-	NRF_LOG_INFO("receive Flag data is %d, length = %d\r\n", p_data[0], length);
+	NRF_LOG_INFO("receive Flag data is %d, length = %d", p_data[0], length);
+}
+
+static void nRF52_ble_to_mcu_via_spi()
+{
+    uint8_t i = 0;
+    for (i = 0; i < HAPTIC_RUMBLE_DATA_LENGTH; i++)
+        m_tx_buf[i]++;
+    //memset(m_tx_buf, 0, HAPTIC_RUMBLE_DATA_LENGTH);
+	  memset(m_rx_buf, 0, HAPTIC_RUMBLE_DATA_LENGTH);
+    //memcpy(m_tx_buf, haptic_rumble_value, HAPTIC_RUMBLE_DATA_LENGTH);
+    //NRF_LOG_INFO("haptic value is %d, spi tx is %d\r\n", haptic_rumble_value[1], m_tx_buf[1]);
+    APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, m_tx_buf, HAPTIC_RUMBLE_DATA_LENGTH, m_rx_buf, HAPTIC_RUMBLE_DATA_LENGTH));
 }
 
 static void haptic_rumble_handler(ble_haptic_t * p_haptic, uint8_t * p_data, uint16_t length)
 {
-	NRF_LOG_INFO("receive Rumble data is ");
-	NRF_LOG_HEXDUMP_INFO(p_data, strlen((const char *) p_data));
+	NRF_LOG_INFO("receive Rumble data is %d\r\n", p_data[1]);
+	/*NRF_LOG_HEXDUMP_INFO(p_data, strlen((const char *) p_data));
 	NRF_LOG_INFO("\n");
 	NRF_LOG_INFO("low : %x, high : %x \r\n", (uint8_t)p_data[0], (uint8_t)p_data[1]);
 	uint16_t data = (p_data[1] << 8) | p_data[0];
-	NRF_LOG_INFO("convert data : %d\r\n", (uint16_t)data);
+	NRF_LOG_INFO("convert data : %d\r\n", (uint16_t)data);*/
 	memcpy(haptic_rumble_value, p_data, HAPTIC_RUMBLE_DATA_LENGTH);
+
+  nRF52_ble_to_mcu_via_spi();
 }
 
 /**@brief Function for initializing services that will be used by the application.
@@ -392,6 +409,7 @@ static void services_init(void)
 static void on_conn_params_evt(ble_conn_params_evt_t * p_evt)
 {
     uint32_t err_code;
+    NRF_LOG_DEBUG("on_conn_params_evt evt type is %d\r\n", p_evt->evt_type);
 
     if (p_evt->evt_type == BLE_CONN_PARAMS_EVT_FAILED)
     {
@@ -493,14 +511,14 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
     {
         case BLE_GAP_EVT_DISCONNECTED:
             NRF_LOG_INFO("Disconnected.\r\n");
-				    LEDS_INVERT(BSP_LED_0_MASK);
+				    //LEDS_INVERT(BSP_LED_0_MASK);
             break; // BLE_GAP_EVT_DISCONNECTED
 
         case BLE_GAP_EVT_CONNECTED:
             NRF_LOG_INFO("Connected.\r\n");
-				    LEDS_ON(BSP_LED_0_MASK);
+				    //LEDS_ON(BSP_LED_0_MASK);
             m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
-				    APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, m_tx_buf, HAPTIC_RUMBLE_DATA_LENGTH, m_rx_buf, HAPTIC_REPROT_DATA_LENGTH));
+				    //APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, m_tx_buf, HAPTIC_RUMBLE_DATA_LENGTH, m_rx_buf, HAPTIC_REPROT_DATA_LENGTH));
             break; // BLE_GAP_EVT_CONNECTED
 
         case BLE_GATTC_EVT_TIMEOUT:
@@ -585,10 +603,6 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
     ble_conn_params_on_ble_evt(p_ble_evt);
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
-    /*YOUR_JOB add calls to _on_ble_evt functions from each service your application is using
-       ble_xxs_on_ble_evt(&m_xxs, p_ble_evt);
-       ble_yys_on_ble_evt(&m_yys, p_ble_evt);
-     */
 }
 
 
@@ -742,8 +756,12 @@ static void advertising_start(void)
     APP_ERROR_CHECK(err_code);
 }
 
-static int i = 0;
-void spis_event_handler(nrf_drv_spis_event_t event)
+void spi_event_handler(nrf_drv_spi_evt_t const * p_event)
+{
+	  NRF_LOG_INFO("SPI Transfer completed send : %d, receive : %d.\r\n", m_tx_buf[1], m_rx_buf[1]);
+}
+
+/*void spis_event_handler(nrf_drv_spis_event_t event)
 {
 	if (event.evt_type == NRF_DRV_SPIS_XFER_DONE)
 	{
@@ -757,13 +775,27 @@ void spis_event_handler(nrf_drv_spis_event_t event)
 			memset(m_rx_buf, 0, HAPTIC_REPROT_DATA_LENGTH+1);
 			memcpy(m_tx_buf, haptic_rumble_value, HAPTIC_RUMBLE_DATA_LENGTH);
 			APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, m_tx_buf, HAPTIC_RUMBLE_DATA_LENGTH, m_rx_buf, HAPTIC_REPROT_DATA_LENGTH));
-			i++;
 		}    
 	}
+}*/
+
+/** spi master init */
+static void spi_init()
+{
+    memset(m_tx_buf, 0, HAPTIC_RUMBLE_DATA_LENGTH);
+    memset(m_rx_buf, 0, HAPTIC_RUMBLE_DATA_LENGTH);
+
+    nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
+    spi_config.ss_pin               = SPI_SS_PIN;
+    spi_config.miso_pin             = SPI_MISO_PIN;
+    spi_config.mosi_pin             = SPI_MOSI_PIN;
+    spi_config.sck_pin              = SPI_SCK_PIN;
+
+    APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler));
 }
 
 /** spi slave init */
-void spis_init()
+/*void spis_init()
 {
 		nrf_drv_spis_config_t spis_config = NRF_DRV_SPIS_DEFAULT_CONFIG;
 		spis_config.csn_pin               = APP_SPIS_CS_PIN;
@@ -772,7 +804,7 @@ void spis_init()
 		spis_config.sck_pin               = APP_SPIS_SCK_PIN;
 		APP_ERROR_CHECK(nrf_drv_spis_init(&spis, &spis_config, spis_event_handler));
 	  memcpy(m_tx_buf, haptic_rumble_value, HAPTIC_RUMBLE_DATA_LENGTH);
-}
+}*/
 
 /**@brief Function for application main entry.
  */
@@ -800,11 +832,13 @@ int main(void)
     services_init();
     conn_params_init();
 
-    spis_init();
+    //spis_init();
+    spi_init();
 		
     // Start execution.
     NRF_LOG_INFO("Goertek Haptic started\r\n");
     advertising_start();
+
     // Enter main loop.
     for (;;)
     {
@@ -812,10 +846,8 @@ int main(void)
         {
             power_manage();
         }
+
+        nRF52_ble_to_mcu_via_spi();
+        nrf_delay_ms(100);
     }
 }
-
-
-/**
- * @}
- */

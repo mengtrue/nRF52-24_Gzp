@@ -34,7 +34,7 @@ extern "C" {
 #define HAPTIC_SERVICE_MAX_DATA_LENGTH          20                 //Glove Service data max length sent once
 #define HAPTIC_FLAG_DATA_LENGTH                 1                  //Glove Flag value length, 1 byte
 #define HAPTIC_REPROT_DATA_LENGTH               20                 //Glove Report data value length, 24 bytes
-#define HAPTIC_RUMBLE_DATA_LENGTH               3                  //Glove Rumble value length, 2 bytes
+#define HAPTIC_RUMBLE_DATA_LENGTH               10                  //Glove Rumble value length, 2 bytes
  
 typedef struct ble_haptic_s ble_haptic_t;
  
