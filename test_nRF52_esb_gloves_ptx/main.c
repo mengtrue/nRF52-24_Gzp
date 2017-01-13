@@ -648,8 +648,6 @@ int main(void)
 
     //spis_init();
 
-    LEDS_CONFIGURE(LEDS_MASK);
-
     NRF_LOG_DEBUG("Enhanced ShockBurst Transmitter Example running.\r\n");
 
     while (true)
