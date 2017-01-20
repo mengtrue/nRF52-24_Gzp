@@ -55,6 +55,7 @@
 
 #include "ble_dfu.h"
 #include "ble_haptic.h"
+#include "spi_haptic.h"
 
 #define NRF_LOG_MODULE_NAME "APP"
 #include "nrf_log.h"
@@ -71,8 +72,8 @@
 #define CENTRAL_LINK_COUNT              0                                           /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT           1                                           /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
-#define DEVICE_NAME                     "Nordic_Template"                           /**< Name of device. Will be included in the advertising data. */
-#define MANUFACTURER_NAME               "NordicSemiconductor"                       /**< Manufacturer. Will be passed to Device Information Service. */
+#define DEVICE_NAME                     "GTK_Haptic"                           /**< Name of device. Will be included in the advertising data. */
+#define MANUFACTURER_NAME               "GoerTek"                       /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL                300                                         /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms). */
 #define APP_ADV_TIMEOUT_IN_SECONDS      180                                         /**< The advertising timeout in units of seconds. */
 
@@ -102,7 +103,13 @@
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                            /**< Handle of the current connection. */
 
 static ble_dfu_t m_dfus;
-static ble_haptic_t m_haptics;
+static ble_haptic_t m_ble_haptics;
+static spi_haptic_t m_spi_haptics;
+
+#define BLE_HAPTIC_RUMBLE_LENGTH        20
+
+static uint8_t ble_haptic_rumble_length;
+static uint8_t ble_haptic_rumble_value[BLE_HAPTIC_RUMBLE_LENGTH];
 
 // YOUR_JOB: Use UUIDs for service(s) used in your application.
 static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
@@ -112,7 +119,10 @@ static void advertising_start(void);
 
 static void ble_dfu_evt_handler(ble_dfu_t * p_dfu, ble_dfu_evt_t * p_evt);
 
+static void ble_haptic_value_init(void);
 static void ble_haptic_evt_handler(ble_haptic_t * p_haptic, ble_haptic_evt_t * p_evt);
+static void ble_haptic_rumble_data_handler(ble_haptic_t * p_haptic, uint8_t * p_data, uint16_t length);
+static void spi_haptic_event_handler(uint8_t * rx_buf, uint8_t rx_length);
 
 /**@brief Callback function for asserts in the SoftDevice.
  *
@@ -350,6 +360,7 @@ static void services_init(void)
     uint32_t err_code;
     ble_dfu_init_t       dfus_init;
     ble_haptic_init_t    haptics_init; 
+    spi_haptic_init_t    spi_haptics_init;
 
     // Initialize the Device Firmware Update Service.
     memset(&dfus_init, 0, sizeof(dfus_init));
@@ -361,12 +372,19 @@ static void services_init(void)
     err_code = ble_dfu_init(&m_dfus, &dfus_init);
     APP_ERROR_CHECK(err_code);
 
-    NRF_LOG_INFO("main services_init next haptic\r\n");
     memset(&haptics_init, 0, sizeof(haptics_init));
 
-    haptics_init.evt_handler    = ble_haptic_evt_handler;
-    NRF_LOG_INFO("main services_init start haptic init\r\n");
-    err_code = ble_haptic_init(&m_haptics, &haptics_init);
+    haptics_init.evt_handler            = ble_haptic_evt_handler;
+    haptics_init.rumble_data_handler    = ble_haptic_rumble_data_handler;
+
+    err_code = ble_haptic_init(&m_ble_haptics, &haptics_init);
+    APP_ERROR_CHECK(err_code);
+
+    memset(&spi_haptics_init, 0, sizeof(spi_haptics_init));
+
+    spi_haptics_init.evt_handler    = spi_haptic_event_handler;
+
+    err_code = spi_haptic_init(&m_spi_haptics, &spi_haptics_init);
     APP_ERROR_CHECK(err_code);
 
     /* YOUR_JOB: Add code to initialize the services used by the application.
@@ -616,7 +634,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
     ble_dfu_on_ble_evt(&m_dfus, p_ble_evt);
-    ble_haptic_on_ble_evt(&m_haptics, p_ble_evt);
+    ble_haptic_on_ble_evt(&m_ble_haptics, p_ble_evt);
     /*YOUR_JOB add calls to _on_ble_evt functions from each service your application is using
        ble_xxs_on_ble_evt(&m_xxs, p_ble_evt);
        ble_yys_on_ble_evt(&m_yys, p_ble_evt);
@@ -882,6 +900,26 @@ static void ble_haptic_evt_handler(ble_haptic_t * p_haptic, ble_haptic_evt_t * p
     }
 }
 
+static void ble_haptic_value_init()
+{
+    memset(ble_haptic_rumble_value, 0, BLE_HAPTIC_RUMBLE_LENGTH);
+    ble_haptic_rumble_length = 0;
+}
+
+static void ble_haptic_rumble_data_handler(ble_haptic_t * p_haptic, uint8_t * p_data, uint16_t length)
+{
+	  NRF_LOG_INFO("receive ble rumble value, data : %x, length : %d\r\n", (uint32_t)p_data, length);
+    ble_haptic_rumble_length = length;
+    memcpy(ble_haptic_rumble_value, p_data, length);
+
+    spi_haptic_send(ble_haptic_rumble_value, ble_haptic_rumble_length);
+}
+
+static void spi_haptic_event_handler(uint8_t * rx_buf, uint8_t length)
+{
+	  NRF_LOG_INFO("receive spi value, buf : %x, length : %d\r\n", (uint32_t)rx_buf, length);
+}
+
 /**@brief Function for application main entry.
  */
 int main(void)
@@ -893,8 +931,10 @@ int main(void)
     err_code = NRF_LOG_INIT(NULL);
     APP_ERROR_CHECK(err_code);
 
+    ble_haptic_value_init();
+
     timers_init();
-    buttons_leds_init(&erase_bonds);
+    buttons_leds_init(&erase_bonds);    
     ble_stack_init();
     peer_manager_init(erase_bonds);
     if (erase_bonds == true)

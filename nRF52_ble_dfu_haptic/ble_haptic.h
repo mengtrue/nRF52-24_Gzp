@@ -24,18 +24,21 @@ typedef struct {
 typedef struct ble_haptic_s ble_haptic_t;
 
 typedef void (*ble_haptic_evt_handler_t)(ble_haptic_t * p_haptic, ble_haptic_evt_t * p_evt);
+typedef void (*ble_haptic_rumble_data_handler_t)(ble_haptic_t * p_haptic, uint8_t * p_data, uint16_t length);
 
 struct ble_haptic_s {
-    uint8_t                     uuid_type;                     // UUID type for haptic UUID
-    uint16_t                    service_handler;               // SoftDevice provide to handle of haptic
-    uint16_t                    conn_handler;
-    bool                        is_notification_enabled;
-    ble_gatts_char_handles_t    rumble_char;
-    ble_haptic_evt_handler_t    evt_handler;
+    uint8_t                             uuid_type;                     // UUID type for haptic UUID
+    uint16_t                            service_handler;               // SoftDevice provide to handle of haptic
+    uint16_t                            conn_handler;
+    bool                                is_notification_enabled;
+    ble_gatts_char_handles_t            rumble_char;
+    ble_haptic_evt_handler_t            evt_handler;
+    ble_haptic_rumble_data_handler_t    rumble_data_handler;
 };
 
 typedef struct {
-    ble_haptic_evt_handler_t    evt_handler;
+    ble_haptic_evt_handler_t            evt_handler;
+    ble_haptic_rumble_data_handler_t    rumble_data_handler;
 }ble_haptic_init_t;
 
 uint32_t ble_haptic_init(ble_haptic_t * p_haptic, const ble_haptic_init_t * p_haptic_init);

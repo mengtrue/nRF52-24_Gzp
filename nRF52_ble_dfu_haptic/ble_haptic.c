@@ -3,8 +3,6 @@
 #include <string.h>
 #include "sdk_macros.h"
 
-ble_haptic_t * p_m_haptic;
-
 static uint32_t rumble_char_add(ble_haptic_t * p_haptic, const ble_haptic_init_t * p_haptic_init)
 {
     ble_gatts_char_md_t    char_md;
@@ -66,7 +64,6 @@ uint32_t ble_haptic_init(ble_haptic_t * p_haptic, const ble_haptic_init_t * p_ha
 
     VERIFY_PARAM_NOT_NULL(p_haptic);
     VERIFY_PARAM_NOT_NULL(p_haptic_init);
-    p_m_haptic = p_haptic;
     p_haptic->conn_handler               = BLE_CONN_HANDLE_INVALID;
     p_haptic->evt_handler                = p_haptic_init->evt_handler;
     p_haptic->is_notification_enabled    = false;
@@ -105,14 +102,18 @@ static void on_haptic_cccd_write(ble_haptic_t * p_haptic, ble_gatts_evt_write_t 
     }
 }
 
-static void on_haptic_value_write(ble_haptic_t * p_haptic, ble_gatts_evt_write_t const * p_evt_write)
+static void on_haptic_value_write(ble_haptic_t * p_haptic, ble_gatts_evt_write_t * p_evt_write)
 {
-
     if (p_haptic->evt_handler != NULL)
     {
         ble_haptic_evt_t evt;
         evt.type = BLE_HAPTIC_EVT_RUMBLE_SEND;
         p_haptic->evt_handler(p_haptic, &evt);
+    }
+
+    if (p_haptic->rumble_data_handler != NULL)
+    {
+        p_haptic->rumble_data_handler(p_haptic, p_evt_write->data, p_evt_write->len);
     }
 }
 
@@ -128,9 +129,9 @@ static void on_disconnect(ble_haptic_t * p_haptic, ble_evt_t const * p_ble_evt)
     p_haptic->conn_handler = BLE_CONN_HANDLE_INVALID;
 }
 
-static void on_write(ble_haptic_t * p_haptic, ble_evt_t const * p_ble_evt)
+static void on_write(ble_haptic_t * p_haptic, ble_evt_t * p_ble_evt)
 {
-    const ble_gatts_evt_write_t * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
+    ble_gatts_evt_write_t * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
 
     if (p_evt_write->handle == p_haptic->rumble_char.cccd_handle)
     {     

@@ -1178,13 +1178,46 @@
 // <e> SPI_ENABLED - nrf_drv_spi - SPI/SPIM peripheral driver
 //==========================================================
 #ifndef SPI_ENABLED
-#define SPI_ENABLED 0
+#define SPI_ENABLED 1
 #endif
 #if  SPI_ENABLED
+
+// <e> SPI_CONFIGURATION - Spi configuration
+
+//==========================================================
+// <o> SPI_SCK_PIN - Pin number  <0-31> 
+
+
+#ifndef SPI_SCK_PIN
+#define SPI_SCK_PIN 27
+#endif
+
+// <o> SPI_MISO_PIN - Pin number  <0-31> 
+
+
+#ifndef SPI_MISO_PIN
+#define SPI_MISO_PIN 28
+#endif
+
+// <o> SPI_MOSI_PIN - Pin number  <0-31> 
+
+
+#ifndef SPI_MOSI_PIN
+#define SPI_MOSI_PIN 30
+#endif
+
+// <o> SPI_SS_PIN - Pin number  <0-31> 
+
+
+#ifndef SPI_SS_PIN
+#define SPI_SS_PIN 29
+#endif
+// </e>
+
 // <e> SPI_CONFIG_LOG_ENABLED - Enables logging in the module.
 //==========================================================
 #ifndef SPI_CONFIG_LOG_ENABLED
-#define SPI_CONFIG_LOG_ENABLED 0
+#define SPI_CONFIG_LOG_ENABLED 1
 #endif
 #if  SPI_CONFIG_LOG_ENABLED
 // <o> SPI_CONFIG_LOG_LEVEL  - Default Severity level
@@ -1196,7 +1229,7 @@
 // <4=> Debug 
 
 #ifndef SPI_CONFIG_LOG_LEVEL
-#define SPI_CONFIG_LOG_LEVEL 3
+#define SPI_CONFIG_LOG_LEVEL 4
 #endif
 
 // <o> SPI_CONFIG_INFO_COLOR  - ANSI escape code prefix.
@@ -1254,7 +1287,7 @@
 // <e> SPI0_ENABLED - Enable SPI0 instance
 //==========================================================
 #ifndef SPI0_ENABLED
-#define SPI0_ENABLED 0
+#define SPI0_ENABLED 1
 #endif
 #if  SPI0_ENABLED
 // <q> SPI0_USE_EASY_DMA  - Use EasyDMA
@@ -1702,7 +1735,7 @@
 #endif //WDT_ENABLED
 // </e>
 
-// </h> 
+// </h>
 //==========================================================
 
 // <h> nRF_Libraries 
@@ -2251,7 +2284,7 @@
 // <4=> Debug 
 
 #ifndef NRF_LOG_DEFAULT_LEVEL
-#define NRF_LOG_DEFAULT_LEVEL 3
+#define NRF_LOG_DEFAULT_LEVEL 4
 #endif
 
 // <e> NRF_LOG_DEFERRED - Enable deffered logger.
