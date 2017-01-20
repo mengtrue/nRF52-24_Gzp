@@ -621,6 +621,8 @@ bool comPareString(uint8_t * src, uint8_t * des, uint8_t size)
 		return result;
 }
 
+static int i = 0;
+
 int main(void)
 {
     ret_code_t err_code;
@@ -652,6 +654,11 @@ int main(void)
 
     while (true)
     {
+        if (i == 400)
+        {
+            NRF_POWER->GPREGRET = 1;
+            NVIC_SystemReset();
+        }
         /*spis_xfer_done = false;
 			  APP_ERROR_CHECK(nrf_drv_spis_buffers_set(&spis, spis_tx_data, NORDIC_ESB_PACKET_LENGTH, spis_rx_data, NORDIC_SPIS_RX_LENGTH));
         while (!spis_xfer_done)
@@ -702,6 +709,7 @@ int main(void)
 				else
 				{
 					  test_spis_esb_fun();
+            i++;
 				    nrf_delay_ms(5);
 				}
 				
