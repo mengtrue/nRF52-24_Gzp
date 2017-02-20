@@ -56,6 +56,7 @@
 #include "ble_dfu.h"
 #include "ble_haptic.h"
 #include "spi_haptic.h"
+#include "nrf_delay.h"
 
 #define NRF_LOG_MODULE_NAME "APP"
 #include "nrf_log.h"
@@ -106,6 +107,8 @@ static ble_dfu_t m_dfus;
 static ble_haptic_t m_ble_haptics;
 static spi_haptic_t m_spi_haptics;
 
+static bool bleConnected = false;
+
 #define BLE_HAPTIC_RUMBLE_LENGTH        20
 
 static uint8_t ble_haptic_rumble_length;
@@ -113,7 +116,8 @@ static uint8_t ble_haptic_rumble_value[BLE_HAPTIC_RUMBLE_LENGTH];
 
 // YOUR_JOB: Use UUIDs for service(s) used in your application.
 static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
-static ble_uuid_t m_sca_uuids[] = {{BLE_UUID_HAPTIC_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}};
+static ble_uuid_t m_sca_uuids[] = {{BLE_UUID_DFU_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN},
+                                   {BLE_UUID_HAPTIC_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}};
 
 static void advertising_start(void);
 
@@ -363,14 +367,14 @@ static void services_init(void)
     spi_haptic_init_t    spi_haptics_init;
 
     // Initialize the Device Firmware Update Service.
-    memset(&dfus_init, 0, sizeof(dfus_init));
+    /*memset(&dfus_init, 0, sizeof(dfus_init));
 
     dfus_init.evt_handler                               = ble_dfu_evt_handler;
     dfus_init.ctrl_point_security_req_write_perm        = SEC_SIGNED;
     dfus_init.ctrl_point_security_req_cccd_write_perm   = SEC_SIGNED;
 
     err_code = ble_dfu_init(&m_dfus, &dfus_init);
-    APP_ERROR_CHECK(err_code);
+    APP_ERROR_CHECK(err_code);*/
 
     memset(&haptics_init, 0, sizeof(haptics_init));
 
@@ -514,8 +518,8 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
     {
         case BLE_ADV_EVT_FAST:
             NRF_LOG_INFO("Fast advertising\r\n");
-            err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING);
-            APP_ERROR_CHECK(err_code);
+            //err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING);
+            //APP_ERROR_CHECK(err_code);
             break;
 
         case BLE_ADV_EVT_IDLE:
@@ -540,14 +544,17 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
     {
         case BLE_GAP_EVT_DISCONNECTED:
             NRF_LOG_INFO("Disconnected.\r\n");
-            err_code = bsp_indication_set(BSP_INDICATE_IDLE);
-            APP_ERROR_CHECK(err_code);
+            bleConnected = false;
+            //err_code = bsp_indication_set(BSP_INDICATE_IDLE);
+            //APP_ERROR_CHECK(err_code);
             break; // BLE_GAP_EVT_DISCONNECTED
 
         case BLE_GAP_EVT_CONNECTED:
             NRF_LOG_INFO("Connected.\r\n");
-            err_code = bsp_indication_set(BSP_INDICATE_CONNECTED);
-            APP_ERROR_CHECK(err_code);
+            bleConnected = true;
+            LEDS_OFF(BSP_LED_0_MASK);
+            //err_code = bsp_indication_set(BSP_INDICATE_CONNECTED);
+            //APP_ERROR_CHECK(err_code);
             m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
             break; // BLE_GAP_EVT_CONNECTED
 
@@ -633,7 +640,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
     bsp_btn_ble_on_ble_evt(p_ble_evt);
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
-    ble_dfu_on_ble_evt(&m_dfus, p_ble_evt);
+    //ble_dfu_on_ble_evt(&m_dfus, p_ble_evt);
     ble_haptic_on_ble_evt(&m_ble_haptics, p_ble_evt);
     /*YOUR_JOB add calls to _on_ble_evt functions from each service your application is using
        ble_xxs_on_ble_evt(&m_xxs, p_ble_evt);
@@ -671,6 +678,11 @@ static void ble_stack_init(void)
     uint32_t err_code;
 
     nrf_clock_lf_cfg_t clock_lf_cfg = NRF_CLOCK_LFCLKSRC;
+
+    clock_lf_cfg.source = NRF_CLOCK_LF_SRC_RC;
+    clock_lf_cfg.rc_ctiv = 16;
+    clock_lf_cfg.rc_temp_ctiv = 2;
+    clock_lf_cfg.xtal_accuracy = NRF_CLOCK_LF_XTAL_ACCURACY_20_PPM;
 
     // Initialize the SoftDevice handler module.
     SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
@@ -838,6 +850,11 @@ static void buttons_leds_init(bool * p_erase_bonds)
     *p_erase_bonds = (startup_event == BSP_EVENT_CLEAR_BONDING_DATA);
 }
 
+static void leds_init(void)
+{
+    LEDS_CONFIGURE(BSP_LED_0_MASK);
+    LEDS_OFF(BSP_LED_0_MASK);
+}
 
 /**@brief Function for the Power manager.
  */
@@ -920,6 +937,17 @@ static void spi_haptic_event_handler(uint8_t * rx_buf, uint8_t length)
 	  NRF_LOG_INFO("receive spi value, buf : %x, length : %d\r\n", (uint32_t)rx_buf, length);
 }
 
+		// test
+		uint8_t test_spi_length = 10;
+		uint8_t test_spi_tx[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+
+static void test()
+{
+    uint8_t i = 0;
+    for (i = 0; i < test_spi_length; i++)
+        test_spi_tx[i]++;
+}
+
 /**@brief Function for application main entry.
  */
 int main(void)
@@ -934,7 +962,8 @@ int main(void)
     ble_haptic_value_init();
 
     timers_init();
-    buttons_leds_init(&erase_bonds);    
+    //buttons_leds_init(&erase_bonds);
+    leds_init();
     ble_stack_init();
     peer_manager_init(erase_bonds);
     if (erase_bonds == true)
@@ -955,10 +984,22 @@ int main(void)
     // Enter main loop.
     for (;;)
     {
+			  if (bleConnected == true && m_ble_haptics.conn_handler != BLE_CONN_HANDLE_INVALID)
+        {
+					  test();
+            //spi_haptic_send(test_spi_tx, test_spi_length);
+            NRF_LOG_INFO("LED\r\n");
+					  nrf_delay_ms(100);					  
+        } else
+        {
+            LEDS_INVERT(BSP_LED_0_MASK);
+					  NRF_LOG_INFO("no BT\r\n");
+        }
         if (NRF_LOG_PROCESS() == false)
         {
             power_manage();
         }
+				nrf_delay_ms(100);
     }
 }
 
