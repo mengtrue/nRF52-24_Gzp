@@ -53,7 +53,7 @@
 #include "ble_advertising.h"
 #include "ble_conn_state.h"
 
-#include "ble_dfu.h"
+//#include "ble_dfu.h"
 #include "ble_haptic.h"
 #include "spi_haptic.h"
 #include "nrf_delay.h"
@@ -103,7 +103,7 @@
 
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                            /**< Handle of the current connection. */
 
-static ble_dfu_t m_dfus;
+//static ble_dfu_t m_dfus;
 static ble_haptic_t m_ble_haptics;
 static spi_haptic_t m_spi_haptics;
 
@@ -116,12 +116,12 @@ static uint8_t ble_haptic_rumble_value[BLE_HAPTIC_RUMBLE_LENGTH];
 
 // YOUR_JOB: Use UUIDs for service(s) used in your application.
 static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
-static ble_uuid_t m_sca_uuids[] = {{BLE_UUID_DFU_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN},
-                                   {BLE_UUID_HAPTIC_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}};
+/*static ble_uuid_t m_sca_uuids[] = {{BLE_UUID_DFU_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN},
+                                   {BLE_UUID_HAPTIC_SERVICE, BLE_UUID_TYPE_VENDOR_BEGIN}};*/
 
 static void advertising_start(void);
 
-static void ble_dfu_evt_handler(ble_dfu_t * p_dfu, ble_dfu_evt_t * p_evt);
+//static void ble_dfu_evt_handler(ble_dfu_t * p_dfu, ble_dfu_evt_t * p_evt);
 
 static void ble_haptic_value_init(void);
 static void ble_haptic_evt_handler(ble_haptic_t * p_haptic, ble_haptic_evt_t * p_evt);
@@ -362,7 +362,7 @@ static void gap_params_init(void)
 static void services_init(void)
 {
     uint32_t err_code;
-    ble_dfu_init_t       dfus_init;
+    //ble_dfu_init_t       dfus_init;
     ble_haptic_init_t    haptics_init; 
     spi_haptic_init_t    spi_haptics_init;
 
@@ -512,7 +512,7 @@ static void sleep_mode_enter(void)
  */
 static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
 {
-    uint32_t err_code;
+    //uint32_t err_code;
 
     switch (ble_adv_evt)
     {
@@ -693,7 +693,7 @@ static void ble_stack_init(void)
                                                     &ble_enable_params);
     APP_ERROR_CHECK(err_code);
 
-    ble_enable_params.common_enable_params.vs_uuid_count = 2;                  // add multi custom 128 bit UUID
+    //ble_enable_params.common_enable_params.vs_uuid_count = 2;                  // add multi custom 128 bit UUID
 
     // Check the ram settings against the used number of links
     CHECK_RAM_START_ADDR(CENTRAL_LINK_COUNT, PERIPHERAL_LINK_COUNT);
@@ -762,7 +762,7 @@ static void peer_manager_init(bool erase_bonds)
  *
  * @param[in]   event   Event generated when button is pressed.
  */
-static void bsp_event_handler(bsp_event_t event)
+/*static void bsp_event_handler(bsp_event_t event)
 {
     uint32_t err_code;
 
@@ -795,7 +795,7 @@ static void bsp_event_handler(bsp_event_t event)
         default:
             break;
     }
-}
+}*/
 
 
 /**@brief Function for initializing the Advertising functionality.
@@ -804,7 +804,7 @@ static void advertising_init(void)
 {
     uint32_t               err_code;
     ble_advdata_t          advdata;
-    ble_advdata_t          scanrsp;
+    //ble_advdata_t          scanrsp;
     ble_adv_modes_config_t options;
 
     // Build advertising data struct to pass into @ref ble_advertising_init.
@@ -816,9 +816,9 @@ static void advertising_init(void)
     advdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
     advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
-    memset(&scanrsp, 0, sizeof(scanrsp));
+    /*memset(&scanrsp, 0, sizeof(scanrsp));
     scanrsp.uuids_complete.uuid_cnt = sizeof(m_sca_uuids) / sizeof(m_sca_uuids[0]);
-    scanrsp.uuids_complete.p_uuids  = m_sca_uuids;
+    scanrsp.uuids_complete.p_uuids  = m_sca_uuids;*/
 
     memset(&options, 0, sizeof(options));
     options.ble_adv_fast_enabled  = true;
@@ -834,7 +834,7 @@ static void advertising_init(void)
  *
  * @param[out] p_erase_bonds  Will be true if the clear bonding button was pressed to wake the application up.
  */
-static void buttons_leds_init(bool * p_erase_bonds)
+/*static void buttons_leds_init(bool * p_erase_bonds)
 {
     bsp_event_t startup_event;
 
@@ -848,7 +848,7 @@ static void buttons_leds_init(bool * p_erase_bonds)
     APP_ERROR_CHECK(err_code);
 
     *p_erase_bonds = (startup_event == BSP_EVENT_CLEAR_BONDING_DATA);
-}
+}*/
 
 static void leds_init(void)
 {
@@ -875,7 +875,7 @@ static void advertising_start(void)
     APP_ERROR_CHECK(err_code);
 }
 
-static void ble_dfu_evt_handler(ble_dfu_t * p_dfu, ble_dfu_evt_t * p_evt)
+/*static void ble_dfu_evt_handler(ble_dfu_t * p_dfu, ble_dfu_evt_t * p_evt)
 {
     switch (p_evt->type)
     {
@@ -894,7 +894,7 @@ static void ble_dfu_evt_handler(ble_dfu_t * p_dfu, ble_dfu_evt_t * p_evt)
             NRF_LOG_INFO("Unknown event from ble_dfu\r\n");
             break;
     }
-}
+}*/
 
 static void ble_haptic_evt_handler(ble_haptic_t * p_haptic, ble_haptic_evt_t * p_evt)
 {
@@ -987,9 +987,9 @@ int main(void)
 			  if (bleConnected == true && m_ble_haptics.conn_handler != BLE_CONN_HANDLE_INVALID)
         {
 					  test();
-            //spi_haptic_send(test_spi_tx, test_spi_length);
+            spi_haptic_send(test_spi_tx, test_spi_length);
             NRF_LOG_INFO("LED\r\n");
-					  nrf_delay_ms(100);					  
+					  nrf_delay_ms(100);
         } else
         {
             LEDS_INVERT(BSP_LED_0_MASK);
