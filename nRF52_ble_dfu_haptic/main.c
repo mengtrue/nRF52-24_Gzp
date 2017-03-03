@@ -207,7 +207,7 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
-            pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
+            pm_conn_sec_config_t conn_sec_config = {.allow_repairing = true};        // repair
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
         } break; // PM_EVT_CONN_SEC_CONFIG_REQ
 
@@ -986,10 +986,10 @@ int main(void)
     {
 			  if (bleConnected == true && m_ble_haptics.conn_handler != BLE_CONN_HANDLE_INVALID)
         {
-					  test();
+					  /*test();
             spi_haptic_send(test_spi_tx, test_spi_length);
             NRF_LOG_INFO("LED\r\n");
-					  nrf_delay_ms(100);
+					  nrf_delay_ms(100);*/
         } else
         {
             LEDS_INVERT(BSP_LED_0_MASK);
