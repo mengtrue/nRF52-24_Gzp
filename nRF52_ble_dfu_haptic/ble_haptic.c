@@ -6,18 +6,18 @@
 static uint32_t rumble_char_add(ble_haptic_t * p_haptic, const ble_haptic_init_t * p_haptic_init)
 {
     ble_gatts_char_md_t    char_md;
-    ble_gatts_attr_md_t    cccd_md;
+    //ble_gatts_attr_md_t    cccd_md;
     ble_gatts_attr_t       attr_char_value;
     ble_uuid_t             ble_uuid;
     ble_gatts_attr_md_t    attr_md;
 
-    memset(&cccd_md, 0, sizeof(cccd_md));
+    //memset(&cccd_md, 0, sizeof(cccd_md));
 
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&cccd_md.read_perm);
+    //BLE_GAP_CONN_SEC_MODE_SET_OPEN(&cccd_md.read_perm);
     /* Require security to limit risk of DoS attacks?*/
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&cccd_md.write_perm);
+    //BLE_GAP_CONN_SEC_MODE_SET_OPEN(&cccd_md.write_perm);
 
-    cccd_md.vloc = BLE_GATTS_VLOC_STACK;
+    //cccd_md.vloc = BLE_GATTS_VLOC_STACK;
 
     memset(&char_md, 0, sizeof(char_md));
 
@@ -26,7 +26,7 @@ static uint32_t rumble_char_add(ble_haptic_t * p_haptic, const ble_haptic_init_t
     char_md.p_char_user_desc  = NULL;
     char_md.p_char_pf         = NULL;
     char_md.p_user_desc_md    = NULL;
-    char_md.p_cccd_md         = &cccd_md;
+    //char_md.p_cccd_md         = &cccd_md;
     char_md.p_sccd_md         = NULL;
 
     ble_uuid.type = p_haptic->uuid_type;
@@ -39,14 +39,14 @@ static uint32_t rumble_char_add(ble_haptic_t * p_haptic, const ble_haptic_init_t
 
     attr_md.vloc    = BLE_GATTS_VLOC_STACK;
     attr_md.rd_auth = 0;
-    attr_md.wr_auth = 1;
+    attr_md.wr_auth = 0;
     attr_md.vlen    = 1;
 
     memset(&attr_char_value, 0, sizeof(attr_char_value));
 
     attr_char_value.p_uuid    = &ble_uuid;
     attr_char_value.p_attr_md = &attr_md;
-    attr_char_value.init_len  = 0;
+    attr_char_value.init_len  = sizeof(uint8_t);
     attr_char_value.init_offs = 0;
     attr_char_value.max_len   = BLE_L2CAP_MTU_DEF;
 
@@ -66,6 +66,7 @@ uint32_t ble_haptic_init(ble_haptic_t * p_haptic, const ble_haptic_init_t * p_ha
     VERIFY_PARAM_NOT_NULL(p_haptic_init);
     p_haptic->conn_handler               = BLE_CONN_HANDLE_INVALID;
     p_haptic->evt_handler                = p_haptic_init->evt_handler;
+    p_haptic->rumble_data_handler        = p_haptic_init->rumble_data_handler;
     p_haptic->is_notification_enabled    = false;
     err_code = sd_ble_uuid_vs_add(&nus_base_uuid, &p_haptic->uuid_type);
     VERIFY_SUCCESS(err_code);

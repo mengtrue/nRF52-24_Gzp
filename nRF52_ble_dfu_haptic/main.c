@@ -75,14 +75,14 @@
 
 #define DEVICE_NAME                     "GTK_Haptic"                           /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "GoerTek"                       /**< Manufacturer. Will be passed to Device Information Service. */
-#define APP_ADV_INTERVAL                300                                         /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms). */
+#define APP_ADV_INTERVAL                64                                         /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms). */
 #define APP_ADV_TIMEOUT_IN_SECONDS      180                                         /**< The advertising timeout in units of seconds. */
 
 #define APP_TIMER_PRESCALER             0                                           /**< Value of the RTC1 PRESCALER register. */
 #define APP_TIMER_OP_QUEUE_SIZE         4                                           /**< Size of timer operation queues. */
 
-#define MIN_CONN_INTERVAL               MSEC_TO_UNITS(100, UNIT_1_25_MS)            /**< Minimum acceptable connection interval (0.1 seconds). */
-#define MAX_CONN_INTERVAL               MSEC_TO_UNITS(200, UNIT_1_25_MS)            /**< Maximum acceptable connection interval (0.2 second). */
+#define MIN_CONN_INTERVAL               MSEC_TO_UNITS(20, UNIT_1_25_MS)             /**< Minimum acceptable connection interval (0.1 seconds).  20 ~ 75, phone can set 48ms*/
+#define MAX_CONN_INTERVAL               MSEC_TO_UNITS(75, UNIT_1_25_MS)             /**< Maximum acceptable connection interval (0.2 second). */
 #define SLAVE_LATENCY                   0                                           /**< Slave latency. */
 #define CONN_SUP_TIMEOUT                MSEC_TO_UNITS(4000, UNIT_10_MS)             /**< Connection supervisory timeout (4 seconds). */
 
@@ -930,6 +930,7 @@ static void ble_haptic_rumble_data_handler(ble_haptic_t * p_haptic, uint8_t * p_
     memcpy(ble_haptic_rumble_value, p_data, length);
 
     spi_haptic_send(ble_haptic_rumble_value, ble_haptic_rumble_length);
+    memset(ble_haptic_rumble_value, 0, BLE_HAPTIC_RUMBLE_LENGTH);
 }
 
 static void spi_haptic_event_handler(uint8_t * rx_buf, uint8_t length)
