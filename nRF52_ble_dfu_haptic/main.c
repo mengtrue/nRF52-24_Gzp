@@ -928,6 +928,7 @@ static void ble_haptic_rumble_data_handler(ble_haptic_t * p_haptic, uint8_t * p_
 	  NRF_LOG_INFO("receive ble rumble value, data : %x, length : %d\r\n", (uint32_t)p_data, length);
     ble_haptic_rumble_length = length;
     memcpy(ble_haptic_rumble_value, p_data, length);
+    NRF_LOG_INFO("rumble value is %x, %x, %x, %x\n", (uint8_t)ble_haptic_rumble_value[0], (uint8_t)ble_haptic_rumble_value[1], (uint8_t)ble_haptic_rumble_value[2], (uint8_t)ble_haptic_rumble_value[3]) 
 
     spi_haptic_send(ble_haptic_rumble_value, ble_haptic_rumble_length);
     memset(ble_haptic_rumble_value, 0, BLE_HAPTIC_RUMBLE_LENGTH);

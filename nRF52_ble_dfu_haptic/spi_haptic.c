@@ -3,7 +3,7 @@
 #include "APP_ERROR.h"
 
 #define SPI_INSTANCE               0
-#define SPI_DATA_LENGTH            20
+#define SPI_DATA_LENGTH            4
 
 spi_haptic_t * p_spi_haptic;
 
@@ -23,7 +23,7 @@ void spi_event_handler(nrf_drv_spi_evt_t const * p_event)
     p_spi_haptic->evt_handler(m_rx_buf, rx_length);
 
     memset(m_rx_buf, 0, SPI_DATA_LENGTH);
-    rx_length = 0;
+    rx_length = 0;  
 }
 
 uint32_t spi_haptic_init(spi_haptic_t * p_haptic, const spi_haptic_init_t * p_haptic_init)
@@ -51,5 +51,5 @@ void spi_haptic_send(uint8_t * tx_buf, uint8_t length)
 {
     tx_length = length;
     memcpy(m_tx_buf, tx_buf, tx_length);
-    APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, m_tx_buf, tx_length, m_rx_buf, rx_length));
+    APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, m_tx_buf, tx_length, m_rx_buf, SPI_DATA_LENGTH));
 }
